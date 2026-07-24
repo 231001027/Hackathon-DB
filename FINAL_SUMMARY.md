@@ -8,7 +8,7 @@
 
 A professional, enterprise-grade hackathon registration and management portal for the Smart Ability Hackathon at college. Built with modern web technologies, comprehensive security, performance optimization, and accessibility compliance.
 
-**Live URL**: Ready for deployment to Vercel/Netlify/Traditional Server  
+**Live URL**: https://hackathon-db-six.vercel.app/
 **Build Status**: ✅ All checks passing  
 **Bundle Size**: 392KB total | 155KB gzipped (under 500KB target)  
 **Performance**: Lighthouse 90+, Supports 11 Problem Statements  

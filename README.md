@@ -4,6 +4,8 @@ Professional hackathon registration and team management platform for college hac
 
 **Version**: 1.0.0 | **Status**: Production-Ready
 
+🚀 **Live Demo**: https://hackathon-db-six.vercel.app/
+
 ---
 
 ## 📋 Table of Contents
