@@ -1,0 +1,40 @@
+import type { ReactNode } from 'react';
+import Breadcrumb from '@/components/ui/Breadcrumb';
+import NotificationPanel from '@/components/NotificationPanel';
+import Avatar from '@/components/ui/Avatar';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+import { useAuth } from '@/context/AuthContext';
+
+interface DashboardHeaderProps {
+  title: string;
+  subtitle?: string;
+  breadcrumbs?: { label: string; to?: string }[];
+  actions?: ReactNode;
+}
+
+export default function DashboardHeader({ title, subtitle, breadcrumbs, actions }: DashboardHeaderProps) {
+  const { user } = useAuth();
+  return (
+    <header className="sticky top-0 z-20 border-b border-slate-200/60 bg-white/70 px-4 py-4 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-900/70 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          {breadcrumbs && <div className="mb-2"><Breadcrumb items={breadcrumbs} /></div>}
+          <h1 className="font-display text-xl font-bold text-slate-900 dark:text-white sm:text-2xl">{title}</h1>
+          {subtitle && <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>}
+        </div>
+        <div className="flex items-center gap-2">
+          {actions}
+          <ThemeToggle />
+          <NotificationPanel />
+          <div className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white/60 py-1 pl-1 pr-3 dark:border-slate-700 dark:bg-slate-800/60 sm:flex">
+            <Avatar name={user?.name ?? 'User'} size="sm" />
+            <div className="text-left">
+              <p className="text-xs font-semibold text-slate-900 dark:text-white">{user?.name}</p>
+              <p className="text-[10px] capitalize text-slate-500 dark:text-slate-400">{user?.role}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}
