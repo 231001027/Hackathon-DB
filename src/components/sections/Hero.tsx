@@ -21,7 +21,7 @@ export default function Hero() {
           </span>
           
           {/* Main Hero - Logo and Title Side by Side, Centered */}
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-2 sm:gap-3 lg:gap-4">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-2 sm:gap-3">
             {/* Logo */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8, x: -40 }}
@@ -41,12 +41,12 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-col items-center lg:items-start gap-0"
+              className="flex flex-col items-center lg:items-start gap-4"
             >
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
-                Smart Ability
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+                <span className="text-purple-600 dark:text-purple-400">Smart Ability</span>
               </h1>
-              <p className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight gradient-text leading-tight">
+              <p className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-amber-500 dark:text-amber-400 leading-tight">
                 Innovation
               </p>
             </motion.div>
