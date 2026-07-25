@@ -96,7 +96,7 @@ export default function LoginPage({ mode }: LoginProps) {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label-text"><Mail className="mr-1 inline h-4 w-4" /> Email</label>
-              <input className="input-field" value={email} onChange={(e) => { setEmail(e.target.value); setErrors((er) => ({ ...er, email: undefined })); }} placeholder={isStudent ? 'you@college.edu' : 'admin@smartinnovation.com'} />
+              <input className="input-field" value={email} onChange={(e) => { setEmail(e.target.value); setErrors((er) => ({ ...er, email: undefined })); }} placeholder={isStudent ? 'you@college.edu' : 'admin@rec.com'} />
               {errors.email && <p className="mt-1 text-xs text-rose-500">{errors.email}</p>}
             </div>
             <div>

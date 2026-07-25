@@ -10,14 +10,14 @@ export const STORAGE_KEYS = {
 export const MAX_TEAM_MEMBERS = 4;
 
 export const ADMIN_CREDENTIALS = {
-  email: 'admin@smarthackathon.com',
-  password: 'admin123',
+  email: 'admin@rec.com',
+  password: 'admin@123',
   name: 'Admin',
 } as const;
 
 export const ADMIN_USER = {
   role: 'admin' as const,
-  email: 'admin@smarthackathon.com',
+  email: 'admin@rec.com',
   name: 'Administrator',
 };
 
