@@ -40,7 +40,17 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-auto max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        {/* Left Side - Logos */}
+        <div className="hidden flex-shrink-0 items-center gap-3 lg:flex">
+          <img src="/smartability-logo.png" alt="Smart Ability Logo" className="h-12 w-12 object-contain" />
+          <div className="flex gap-2.5">
+            <img src="/college%20logo.png" alt="College Logo" className="h-10 w-10 object-contain" title="Rajalakshmi Engineering College" />
+            <img src="/center%20of%20excellence%20logo.png" alt="Centre of Excellence Logo" className="h-10 w-10 object-contain" title="Centre of Excellence in Assistive Technology" />
+            <img src="/niepmed%20logo%20.png" alt="NIEPMD Logo" className="h-10 w-10 object-contain" title="Department of Speech, Hearing & Communication, NIEPMD" />
+          </div>
+        </div>
+
         {/* Center Navigation Items */}
         <div className="hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => (
@@ -55,7 +65,7 @@ export default function Navbar() {
         </div>
 
         {/* Right Side - Theme Toggle & Auth */}
-        <div className="absolute right-4 flex items-center gap-2 sm:right-6 lg:right-8">
+        <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
           <ThemeToggle />
 
           {user ? (
