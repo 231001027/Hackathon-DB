@@ -44,7 +44,7 @@ export default function Hero() {
               className="flex flex-col items-center lg:items-start gap-4"
             >
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-                <span className="text-purple-600 dark:text-purple-400">Smart Ability</span>
+                <span className="text-violet-700 dark:text-violet-500">Smart Ability</span>
               </h1>
               <p className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-amber-500 dark:text-amber-400 leading-tight">
                 Innovation

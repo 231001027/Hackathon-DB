@@ -46,7 +46,7 @@ export default function AboutPage() {
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mx-auto max-w-3xl text-center">
             <span className="section-eyebrow">About SmartAbility</span>
             <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              <span className="text-purple-600 dark:text-purple-400">Smart Ability</span>
+              <span className="text-violet-700 dark:text-violet-500">Smart Ability</span>
               {' '}
               <span className="text-amber-500 dark:text-amber-400">Innovation</span>
             </h1>
