@@ -42,13 +42,11 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex h-auto max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         {/* Left Side - Logos */}
-        <div className="hidden flex-shrink-0 items-center gap-3 lg:flex">
-          <img src="/smartability-logo.png" alt="Smart Ability Logo" className="h-12 w-12 object-contain" />
-          <div className="flex gap-2.5">
-            <img src="/college%20logo.png" alt="College Logo" className="h-10 w-10 object-contain" title="Rajalakshmi Engineering College" />
-            <img src="/center%20of%20excellence%20logo.png" alt="Centre of Excellence Logo" className="h-10 w-10 object-contain" title="Centre of Excellence in Assistive Technology" />
-            <img src="/niepmed%20logo%20.png" alt="NIEPMD Logo" className="h-10 w-10 object-contain" title="Department of Speech, Hearing & Communication, NIEPMD" />
-          </div>
+        <div className="hidden flex-shrink-0 items-center gap-4 lg:flex">
+          <img src="/smartability-logo.png" alt="Smart Ability Logo" className="h-14 w-14 object-contain" />
+          <img src="/college logo.png" alt="Rajalakshmi Engineering College" className="h-12 w-12 object-contain" title="Rajalakshmi Engineering College" />
+          <img src="/center of excellence logo.png" alt="Centre of Excellence in Assistive Technology" className="h-12 w-12 object-contain" title="Centre of Excellence in Assistive Technology" />
+          <img src="/niepmed logo .png" alt="NIEPMD - Department of Speech, Hearing & Communication" className="h-12 w-12 object-contain" title="Department of Speech, Hearing & Communication, NIEPMD" />
         </div>
 
         {/* Center Navigation Items */}
