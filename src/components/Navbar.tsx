@@ -6,7 +6,6 @@ import { NAV_LINKS } from '@/data';
 import { useAuth } from '@/context/AuthContext';
 import Avatar from '@/components/ui/Avatar';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import Logo from '@/components/ui/Logo';
 import { useClickOutside } from '@/hooks';
 
 export default function Navbar() {
@@ -42,9 +41,8 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2">
-          <Logo size={40} />
-        </Link>
+        {/* Empty space on left */}
+        <div></div>
 
         <div className="hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => (
