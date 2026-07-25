@@ -7,7 +7,7 @@ export const STORAGE_KEYS = {
   notifications: 'sh_notifications_enabled',
 } as const;
 
-export const MAX_TEAM_MEMBERS = 5;
+export const MAX_TEAM_MEMBERS = 4;
 
 export const ADMIN_CREDENTIALS = {
   email: 'admin@smarthackathon.com',

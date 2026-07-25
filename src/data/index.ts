@@ -16,7 +16,7 @@ export const FEATURES = [
   {
     icon: 'Users',
     title: 'Team Registration',
-    description: 'Register your squad of up to 5 members with a guided, validated multi-step form.',
+    description: 'Register your squad of 4 members (including team leader) with a guided, validated multi-step form.',
   },
   {
     icon: 'LayoutDashboard',
@@ -55,7 +55,7 @@ export const TIMELINE = [
   {
     step: '02',
     title: 'Problem Selection & Team Registration',
-    description: 'Teams (4 members) register by selecting one problem statement from either the Software Track (9 Problem Statements) or Hardware Track (2 Problem Statements). Registration is on a first-come, first-served basis based on problem availability.',
+    description: 'Teams (4 members including team leader) register by selecting one problem statement from either the Software Track (9 Problem Statements) or Hardware Track (2 Problem Statements). Registration is on a first-come, first-served basis based on problem availability.',
     icon: 'Target',
   },
   {
@@ -85,7 +85,7 @@ export const FAQS = [
   },
   {
     q: 'Who can participate in SmartAbility?',
-    a: 'Any college student, innovator, researcher, or multidisciplinary team can participate. You will register as a team leader, add up to 4 additional members (5 total), and provide your college and department details.',
+    a: 'Any college student, innovator, researcher, or multidisciplinary team can participate. You will register as a team leader, add up to 3 additional members (4 total including leader), and provide your college and department details.',
   },
   {
     q: 'What is the theme of SmartAbility?',
