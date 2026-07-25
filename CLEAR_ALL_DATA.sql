@@ -4,7 +4,7 @@
 -- Step 1: Delete all activity logs first (no foreign key constraint)
 DELETE FROM public.activity_logs;
 
--- Step 2: Delete all team members
+-- Step 2: Delete all team members (has foreign key to teams)
 DELETE FROM public.team_members;
 
 -- Step 3: Delete all teams
