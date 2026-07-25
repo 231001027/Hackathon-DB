@@ -14,6 +14,7 @@ interface FormState {
   leaderEmail: string;
   password: string;
   confirmPassword: string;
+  college: string;
   department: string;
   year: string;
   mobile: string;
@@ -29,7 +30,7 @@ export default function TeamLeaderRegisterPage() {
 
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({
-    teamName: '', leaderName: '', leaderEmail: '', password: '', confirmPassword: '', department: '', year: '', mobile: '', members: [emptyMember()],
+    teamName: '', leaderName: '', leaderEmail: '', password: '', confirmPassword: '', college: '', department: '', year: '', mobile: '', members: [emptyMember()],
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -72,6 +73,7 @@ export default function TeamLeaderRegisterPage() {
 
   const validateStep1 = (): boolean => {
     const e: Record<string, string> = {};
+    if (!form.college.trim()) e.college = 'College name is required';
     if (!form.department) e.department = 'Select your department';
     if (!form.year) e.year = 'Select your year';
     if (!form.mobile.trim()) e.mobile = 'Mobile number is required';
@@ -122,7 +124,7 @@ export default function TeamLeaderRegisterPage() {
         leaderName: form.leaderName.trim(),
         leaderEmail: form.leaderEmail.trim().toLowerCase(),
         password: form.password,
-        college: '',
+        college: form.college.trim(),
         department: form.department,
         year: form.year,
         mobile: form.mobile.trim(),
@@ -217,6 +219,11 @@ export default function TeamLeaderRegisterPage() {
 
             {step === 1 && (
               <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-5">
+                <div>
+                  <label className="label-text"><GraduationCap className="mr-1 inline h-4 w-4" /> College/Institution</label>
+                  <input className="input-field" value={form.college} onChange={(e) => update('college', e.target.value)} placeholder="Your college or institution name" />
+                  {fieldError('college') && <p className="mt-1 text-xs text-rose-500">{fieldError('college')}</p>}
+                </div>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
                     <label className="label-text"><GraduationCap className="mr-1 inline h-4 w-4" /> Department</label>
