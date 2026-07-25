@@ -20,35 +20,20 @@ export default function Hero() {
             <Sparkles className="h-3.5 w-3.5" /> Innovation Challenge on Assistive Technology
           </span>
           
-          {/* Main Hero - Logo and Title Side by Side, Centered */}
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-1 sm:gap-2 lg:gap-3">
+          {/* Main Hero - Logo Centered */}
+          <div className="flex flex-col items-center justify-center">
             {/* Logo */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8, x: -40 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="flex-shrink-0"
             >
               <img 
                 src="/smartability-logo.png" 
-                alt="Smart Ability Logo"
-                className="h-20 w-20 sm:h-48 sm:w-48 lg:h-56 lg:w-56 object-contain drop-shadow-2xl"
+                alt="Smart Ability Innovation Logo"
+                className="h-32 w-32 sm:h-56 sm:w-56 lg:h-72 lg:w-72 object-contain drop-shadow-2xl"
               />
-            </motion.div>
-
-            {/* Title - Vertical Stack */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-col items-center lg:items-start gap-0"
-            >
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-                <span className="text-violet-700 dark:text-violet-500">Smart Ability</span>
-              </h1>
-              <p className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-amber-500 dark:text-amber-400 leading-tight">
-                Innovation
-              </p>
             </motion.div>
           </div>
 
