@@ -5,11 +5,16 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import StatusBadge from '@/components/ui/StatusBadge';
 
+// Maximum file size: 500KB
+const MAX_FILE_SIZE_BYTES = 500 * 1024; // 500 KB
+const MAX_FILE_SIZE_MB = (MAX_FILE_SIZE_BYTES / (1024 * 1024)).toFixed(1);
+
 export default function UploadCard() {
   const { user, teams, uploadPdf } = useAuth();
   const { success, error } = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState('');
+  const [fileSize, setFileSize] = useState(0);
   const [uploading, setUploading] = useState(false);
 
   const team = teams.find((t) => t.id === user?.teamId);
@@ -17,16 +22,41 @@ export default function UploadCard() {
 
   const isLeader = user?.isLeader;
 
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes, k));
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // Check file type
     if (file.type !== 'application/pdf') {
       error('Invalid file type', 'Only PDF files are accepted.');
       e.target.value = '';
       setFileName('');
+      setFileSize(0);
       return;
     }
+
+    // Check file size
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      error(
+        'File too large',
+        `Maximum file size is ${MAX_FILE_SIZE_MB} MB. Your file is ${formatFileSize(file.size)}.`
+      );
+      e.target.value = '';
+      setFileName('');
+      setFileSize(0);
+      return;
+    }
+
     setFileName(file.name);
+    setFileSize(file.size);
   };
 
   const handleUpload = () => {
@@ -34,6 +64,15 @@ export default function UploadCard() {
       error('No file selected', 'Please choose a PDF file first.');
       return;
     }
+
+    if (fileSize > MAX_FILE_SIZE_BYTES) {
+      error(
+        'File too large',
+        `Maximum file size is ${MAX_FILE_SIZE_MB} MB. Your file is ${formatFileSize(fileSize)}.`
+      );
+      return;
+    }
+
     setUploading(true);
     setTimeout(() => {
       uploadPdf(fileName);
@@ -108,14 +147,17 @@ export default function UploadCard() {
             <p className="mt-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
               {fileName ? fileName : 'Choose File'}
             </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">PDF files only (max 10MB)</p>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">PDF files only (max {MAX_FILE_SIZE_MB} MB)</p>
           </div>
 
           <AnimatePresence>
             {fileName && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="flex items-center gap-2 rounded-xl border border-slate-200/60 bg-white/50 p-3 dark:border-slate-700/60 dark:bg-slate-800/30">
                 <FileText className="h-5 w-5 text-brand-600 dark:text-brand-300" />
-                <span className="flex-1 truncate text-sm font-medium text-slate-700 dark:text-slate-200">{fileName}</span>
+                <div className="flex-1">
+                  <p className="truncate text-sm font-medium text-slate-700 dark:text-slate-200">{fileName}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{formatFileSize(fileSize)}</p>
+                </div>
                 <span className="rounded-md bg-sky-100 px-2 py-0.5 text-[10px] font-bold text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">PDF</span>
               </motion.div>
             )}
@@ -123,7 +165,7 @@ export default function UploadCard() {
 
           <button
             onClick={handleUpload}
-            disabled={!fileName || uploading}
+            disabled={!fileName || uploading || fileSize > MAX_FILE_SIZE_BYTES}
             className="btn-primary w-full"
           >
             {uploading ? (
