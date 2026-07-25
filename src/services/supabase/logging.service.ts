@@ -29,7 +29,6 @@ export async function logActivity(log: ActivityLog): Promise<{ error: string | n
         description: log.description || '',
         metadata: log.metadata || {},
         userEmail: log.userEmail || null,
-        createdAt: new Date().toISOString(),
       });
 
     if (error) {

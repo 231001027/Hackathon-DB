@@ -174,7 +174,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           pdfName: localTeam.pdfName,
           submissionStatus: localTeam.submissionStatus,
           selectedProjectId: localTeam.selectedProjectId || null,
-          createdAt: localTeam.createdAt,
         })
         .then(({ error }) => {
           if (error) {
