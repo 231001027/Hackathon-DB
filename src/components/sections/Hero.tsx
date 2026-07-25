@@ -98,16 +98,16 @@ export default function Hero() {
             className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm"
           >
             <div className="flex items-center gap-2 rounded-full bg-brand-50 px-3 sm:px-4 py-1.5 font-semibold text-brand-700 ring-1 ring-brand-200 dark:bg-brand-900/30 dark:text-brand-300 dark:ring-brand-700/40">
-              📅 01 August 2026
+              � Registration: 25-29 July
             </div>
             <div className="flex items-center gap-2 rounded-full bg-amber-50 px-3 sm:px-4 py-1.5 font-semibold text-amber-700 ring-1 ring-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:ring-amber-700/40">
-              🏆 Prize Pool: ₹1,00,000
+              ⚡ Challenge: 01 August 2026
             </div>
             <div className="flex items-center gap-2 rounded-full bg-violet-50 px-3 sm:px-4 py-1.5 font-semibold text-violet-700 ring-1 ring-violet-200 dark:bg-violet-900/30 dark:text-violet-300 dark:ring-violet-700/40">
-              🤖 AI Software Track
+              💻 9 Software Problems
             </div>
             <div className="flex items-center gap-2 rounded-full bg-sky-50 px-3 sm:px-4 py-1.5 font-semibold text-sky-700 ring-1 ring-sky-200 dark:bg-sky-900/30 dark:text-sky-300 dark:ring-sky-700/40">
-              🔧 Hardware Track
+              🔧 2 Hardware Problems
             </div>
           </motion.div>
         </motion.div>

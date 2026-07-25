@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
-import { ClipboardList, Trophy, Calendar } from 'lucide-react';
+import { ClipboardList, Trophy, Calendar, Zap } from 'lucide-react';
 
 const STATS = [
-  { icon: ClipboardList, value: '11',          label: 'Problem Statements', sub: 'Real-World Challenges' },
-  { icon: Trophy,        value: '₹1,00,000',   label: 'Total Prize Value',  sub: 'Winning Teams' },
-  { icon: Calendar,      value: '01 Aug 2026', label: 'Innovation Date',     sub: 'Mark Your Calendar' },
+  { icon: ClipboardList, value: '11',                    label: 'Problem Statements', sub: 'Real-World Challenges' },
+  { icon: Trophy,        value: '₹1,00,000',            label: 'Total Prize Value',  sub: 'Winning Teams' },
+  { icon: Calendar,      value: '25-29 July 2026',      label: 'Registration Period', sub: 'Open Now' },
+  { icon: Zap,           value: '01 Aug 2026',          label: 'Challenge Date',     sub: 'Mark Your Calendar' },
 ];
 
 export default function StatsBand() {

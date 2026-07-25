@@ -49,31 +49,31 @@ export const TIMELINE = [
   {
     step: '01',
     title: 'Registration Opens',
-    description: 'Team leaders register their squad with college, department, and member details on the SmartAbility portal.',
+    description: 'Official launch of SmartAbility Innovation Challenge on 25 July 2026. Teams can access the registration portal, view all 11 problem statements, competition guidelines, evaluation criteria, and timelines.',
     icon: 'ClipboardList',
   },
   {
     step: '02',
-    title: 'Problem Statement Selection',
-    description: 'Choose one of 11 real-world assistive technology problem statements focused on speech, hearing and communication.',
+    title: 'Problem Selection & Team Registration',
+    description: 'Teams (4 members) register by selecting one problem statement from either the Software Track (9 Problem Statements) or Hardware Track (2 Problem Statements). Registration is on a first-come, first-served basis based on problem availability.',
     icon: 'Target',
   },
   {
     step: '03',
-    title: 'Build & Innovate',
-    description: 'Design and develop your solution — software, hardware, AI-powered app, or smart device — before the deadline.',
+    title: 'Solution Development Begins',
+    description: 'Immediately after successful registration, teams may begin ideation, research, design, and prototype development for their chosen problem statement.',
     icon: 'Cpu',
   },
   {
     step: '04',
-    title: 'Project Submission',
-    description: 'The team leader uploads the final project PDF. Submission closes at midnight on 01 August 2026.',
-    icon: 'FileUp',
+    title: 'Registration Closes',
+    description: 'Registration portal closes on 29 July 2026. Teams must finalize their problem selection and registration before this deadline.',
+    icon: 'Calendar',
   },
   {
     step: '05',
-    title: 'Evaluation & Winners',
-    description: 'Domain experts and judges evaluate submissions. Top teams win a share of the ₹1,00,000 prize pool.',
+    title: 'Innovation Challenge & Evaluation',
+    description: 'On 01 August 2026, teams present their solutions before a panel of Special Educators, domain experts, and technical jury members. Based on evaluation and expert feedback, teams refine and enhance their solutions before the final review.',
     icon: 'Trophy',
   },
 ] as const;
@@ -93,15 +93,15 @@ export const FAQS = [
   },
   {
     q: 'How many problem statements are there?',
-    a: 'There are 11 real-world problem statements identified from the assistive technology domain. Participants choose one and build either an AI software or hardware solution around it.',
+    a: 'There are 11 real-world problem statements identified from the assistive technology domain. The Software Track has 9 problem statements, and the Hardware Track has 2 problem statements. Participants choose one and build either an AI software or hardware solution around it.',
   },
   {
     q: 'What is the total prize value?',
     a: 'The total prize value is ₹1,00,000 distributed across winning teams in both AI software and hardware tracks.',
   },
   {
-    q: 'When and where is the hackathon?',
-    a: 'SmartAbility is scheduled on 01 August 2026, organised by the Centre of Excellence in Assistive Technology, Rajalakshmi Engineering College, in association with NIEPMD.',
+    q: 'When and where is the Innovation Challenge?',
+    a: 'SmartAbility Innovation Challenge runs from 25-29 July 2026 for registration, with the main challenge event on 01 August 2026, organised by the Centre of Excellence in Assistive Technology, Rajalakshmi Engineering College, in association with NIEPMD.',
   },
   {
     q: 'Who are the coordinators?',
@@ -116,8 +116,8 @@ export const FAQS = [
 export const STATS = [
   { label: 'Problem Statements', value: 11, icon: 'ClipboardList' },
   { label: 'Prize Pool (₹)', value: 100000, icon: 'Trophy' },
-  { label: 'Hackathon Date', value: 1, icon: 'Calendar' },
-  { label: 'Colleges Invited', value: 32, icon: 'Building2' },
+  { label: 'Registration: 25-29 July', value: 1, icon: 'Calendar' },
+  { label: 'Challenge: 01 August 2026', value: 1, icon: 'Zap' },
 ] as const;
 
 // Admin dummy data ------------------------------------------------------
@@ -158,8 +158,8 @@ export const SAMPLE_ACTIVITIES: ActivityItem[] = [
 export const SAMPLE_NOTIFICATIONS: AppNotification[] = [
   {
     id: 'n1',
-    title: 'Submission Deadline: 01 August 2026',
-    body: 'Final project PDFs are due on 01 Aug 2026. Ensure your team leader has uploaded before midnight.',
+    title: 'Registration Opens: 25 July 2026',
+    body: 'SmartAbility Innovation Challenge registration is now open. Teams can select from 11 problem statements and register by 29 July 2026.',
     time: '12 min ago',
     read: false,
     tone: 'warning',
@@ -167,7 +167,7 @@ export const SAMPLE_NOTIFICATIONS: AppNotification[] = [
   {
     id: 'n2',
     title: 'Welcome to SmartAbility 2026!',
-    body: 'Your team has been successfully registered. Explore 11 problem statements and start building!',
+    body: 'Your team has been successfully registered. Explore 11 problem statements (9 Software, 2 Hardware) and start building!',
     time: '1 day ago',
     read: false,
     tone: 'success',
@@ -175,7 +175,7 @@ export const SAMPLE_NOTIFICATIONS: AppNotification[] = [
   {
     id: 'n3',
     title: 'Organised by CEAT, Rajalakshmi Engineering College',
-    body: 'SmartAbility is conducted in association with Dept. of Speech, Hearing & Communication, NIEPMD.',
+    body: 'SmartAbility is conducted in association with Dept. of Speech, Hearing & Communication, NIEPMD. Challenge event: 01 August 2026.',
     time: '2 days ago',
     read: true,
     tone: 'info',
