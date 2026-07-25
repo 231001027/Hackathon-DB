@@ -4,6 +4,7 @@ import BgWatermark from '@/components/ui/BgWatermark';
 
 export default function AdminLayout() {
   const location = useLocation();
+
   return (
     <div className="relative flex min-h-screen bg-slate-100 dark:bg-slate-950">
       <BgWatermark />
