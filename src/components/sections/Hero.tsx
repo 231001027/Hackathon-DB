@@ -14,7 +14,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-8"
+          className="text-center space-y-3"
         >
           <span className="section-eyebrow inline-flex items-center gap-1.5 justify-center">
             <Sparkles className="h-3.5 w-3.5" /> Innovation Challenge on Assistive Technology
@@ -32,7 +32,7 @@ export default function Hero() {
               <img 
                 src="/smartability-logo.png" 
                 alt="Smart Ability Logo"
-                className="h-40 w-40 sm:h-48 sm:w-48 lg:h-56 lg:w-56 object-contain drop-shadow-2xl"
+                className="h-20 w-20 sm:h-48 sm:w-48 lg:h-56 lg:w-56 object-contain drop-shadow-2xl"
               />
             </motion.div>
 
@@ -57,7 +57,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-center text-base sm:text-lg font-semibold text-slate-600 dark:text-slate-300 max-w-2xl mx-auto"
+            className="text-center text-base sm:text-lg font-semibold text-slate-600 dark:text-slate-300 max-w-2xl mx-auto -mt-2"
           >
             Build Applications and Devices to Support Speech, Hearing and Communication
           </motion.p>
@@ -67,7 +67,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-center text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-400 max-w-3xl mx-auto"
+            className="text-center text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-400 max-w-3xl mx-auto -mt-2"
           >
             Organised by the <strong className="text-slate-800 dark:text-slate-200">Centre of Excellence in Assistive Technology, Rajalakshmi Engineering College</strong> in association with the <strong className="text-slate-800 dark:text-slate-200">Department of Speech, Hearing and Communication, NIEPMD</strong>. Build <strong className="text-slate-800 dark:text-slate-200">AI-powered software</strong> or <strong className="text-slate-800 dark:text-slate-200">hardware devices</strong> that support persons with speech, hearing and communication disabilities — and compete for <strong className="text-slate-800 dark:text-slate-200">₹1,00,000</strong> in prizes.
           </motion.p>
