@@ -8,3 +8,4 @@ export * from './teams.service';
 export * from './members.service';
 export * from './projects.service';
 export * from './submissions.service';
+export * from './logging.service';

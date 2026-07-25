@@ -19,9 +19,22 @@ export default function Hero() {
           <span className="section-eyebrow inline-flex items-center gap-1.5">
             <Sparkles className="h-3.5 w-3.5" /> Innovation Challenge on Assistive Technology
           </span>
-          <h1 className="mt-5 font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-slate-900 dark:text-white sm:text-6xl lg:text-7xl">
-            Smart Ability <span className="gradient-text">Hackathon</span>
-          </h1>
+          
+          {/* Logo and Title Section */}
+          <div className="mt-5 flex items-center justify-center gap-4 sm:gap-6">
+            <motion.img 
+              src="/smartability-logo.png" 
+              alt="Smart Ability Logo"
+              className="h-20 w-20 sm:h-28 sm:w-28 object-contain drop-shadow-lg"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            />
+            <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl">
+              Smart Ability <span className="gradient-text">Hackathon</span>
+            </h1>
+          </div>
+
           <p className="mt-4 font-display text-xl font-semibold text-slate-600 dark:text-slate-300">
             Build Applications and Devices to Support Speech, Hearing and Communication
           </p>

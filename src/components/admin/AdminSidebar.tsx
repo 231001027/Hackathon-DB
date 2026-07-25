@@ -12,6 +12,7 @@ import {
   PanelLeft,
   Menu,
   X,
+  Bug,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import Avatar from '@/components/ui/Avatar';
@@ -25,6 +26,7 @@ const NAV = [
   { to: '/admin/submissions', label: 'Submissions', icon: FileCheck2 },
   { to: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/admin/settings', label: 'Settings', icon: Settings },
+  { to: '/admin/debugger', label: 'Activity Debugger', icon: Bug },
 ];
 
 export default function AdminSidebar() {
