@@ -30,7 +30,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
       <DashboardHeader
         title="Admin Dashboard"
-        subtitle="Overview of the entire hackathon"
+        subtitle="Overview of the entire innovation"
         breadcrumbs={[{ label: 'Admin', to: '/admin/dashboard' }, { label: 'Dashboard' }]}
       />
 

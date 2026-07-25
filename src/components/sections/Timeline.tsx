@@ -9,7 +9,7 @@ export default function Timeline() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="section-eyebrow">Timeline</span>
           <h2 className="mt-4 font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
-            The <span className="gradient-text">hackathon journey</span>
+            The <span className="gradient-text">innovation journey</span>
           </h2>
           <p className="mt-4 text-slate-600 dark:text-slate-400">
             Five clear stages from registration to crowning the winners.

@@ -98,7 +98,7 @@ export default function AboutPage() {
                   <strong className="text-slate-800 dark:text-slate-200">hardware-based assistive devices</strong> — both aimed at supporting persons with speech, hearing and communication disabilities.
                 </p>
                 <p>
-                  The hackathon features{' '}
+                  The innovation features{' '}
                   <strong className="text-slate-800 dark:text-slate-200">11 real-world problem statements</strong> drawn from the assistive technology domain. Participants choose one and build a practical solution — whether that's a machine learning app, a smart communication device, an NLP tool, an IoT system, or an embedded hardware prototype.
                 </p>
                 <p>
@@ -265,7 +265,7 @@ export default function AboutPage() {
           <div className="glass-card relative overflow-hidden p-10 text-center sm:p-14">
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-500/10 to-accent-500/10" />
             <div className="relative">
-              <h2 className="font-display text-3xl font-bold text-slate-900 dark:text-white sm:text-4xl">Start your hackathon journey</h2>
+              <h2 className="font-display text-3xl font-bold text-slate-900 dark:text-white sm:text-4xl">Start your innovation journey</h2>
               <p className="mx-auto mt-3 max-w-lg text-slate-600 dark:text-slate-400">
                 Register your team and help build an inclusive future through assistive technology.
               </p>

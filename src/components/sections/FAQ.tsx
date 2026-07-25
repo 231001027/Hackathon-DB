@@ -15,7 +15,7 @@ export default function FAQ() {
             Frequently asked <span className="gradient-text">questions</span>
           </h2>
           <p className="mt-4 text-slate-600 dark:text-slate-400">
-            Everything you need to know about participating in Smart Ability Hackathon.
+            Everything you need to know about participating in Smart Ability Innovation.
           </p>
         </div>
 

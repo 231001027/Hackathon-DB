@@ -32,13 +32,13 @@ export default function Contact() {
                 Got questions? <span className="gradient-text">Let's talk</span>
               </h2>
               <p className="mt-4 text-slate-600 dark:text-slate-400">
-                Reach out to the Smart Ability Hackathon organizing team for queries about registration,
+                Reach out to the Smart Ability Innovation organizing team for queries about registration,
                 submissions, rules, or partnerships.
               </p>
 
               <div className="mt-8 space-y-4">
                 {[
-                  { Icon: Mail, label: 'Email', value: 'hackathon@college.edu' },
+                  { Icon: Mail, label: 'Email', value: 'innovation@college.edu' },
                   { Icon: Phone, label: 'Phone', value: '+91 98765 43210' },
                   { Icon: MapPin, label: 'Location', value: 'Innovation Campus, Bangalore' },
                 ].map((c) => (

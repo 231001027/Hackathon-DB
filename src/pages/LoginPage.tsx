@@ -51,7 +51,7 @@ export default function LoginPage({ mode }: LoginProps) {
       setEmail('aarav@college.edu');
       setPassword('password123');
     } else {
-      setEmail('admin@smarthackathon.com');
+      setEmail('admin@smartinnovation.com');
       setPassword('admin123');
     }
   };
@@ -74,7 +74,7 @@ export default function LoginPage({ mode }: LoginProps) {
           <p className="mt-4 max-w-md text-slate-600 dark:text-slate-400">
             {isStudent
               ? 'Log in to access your team dashboard, track your submission status, and manage your project.'
-              : 'Sign in to manage registered teams, review submissions, and view live analytics for the entire hackathon.'}
+              : 'Sign in to manage registered teams, review submissions, and view live analytics for the entire innovation.'}
           </p>
           <div className="mt-8 space-y-3">
             {(isStudent
@@ -99,14 +99,14 @@ export default function LoginPage({ mode }: LoginProps) {
             </div>
             <div>
               <h2 className="font-display text-xl font-bold text-slate-900 dark:text-white">{isStudent ? 'Student Login' : 'Admin Login'}</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{isStudent ? 'Access your team dashboard' : 'Manage the hackathon'}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{isStudent ? 'Access your team dashboard' : 'Manage the innovation'}</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label-text"><Mail className="mr-1 inline h-4 w-4" /> Email</label>
-              <input className="input-field" value={email} onChange={(e) => { setEmail(e.target.value); setErrors((er) => ({ ...er, email: undefined })); }} placeholder={isStudent ? 'you@college.edu' : 'admin@smarthackathon.com'} />
+              <input className="input-field" value={email} onChange={(e) => { setEmail(e.target.value); setErrors((er) => ({ ...er, email: undefined })); }} placeholder={isStudent ? 'you@college.edu' : 'admin@smartinnovation.com'} />
               {errors.email && <p className="mt-1 text-xs text-rose-500">{errors.email}</p>}
             </div>
             <div>

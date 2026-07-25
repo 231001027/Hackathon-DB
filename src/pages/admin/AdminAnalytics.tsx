@@ -21,7 +21,7 @@ export default function AdminAnalytics() {
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
       <DashboardHeader
         title="Analytics"
-        subtitle="Deep dive into hackathon metrics"
+        subtitle="Deep dive into innovation metrics"
         breadcrumbs={[{ label: 'Admin', to: '/admin/dashboard' }, { label: 'Analytics' }]}
       />
 
@@ -89,7 +89,7 @@ export default function AdminAnalytics() {
             <Award className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h3 className="font-display text-base font-bold text-slate-900 dark:text-white">Hackathon Health</h3>
+            <h3 className="font-display text-base font-bold text-slate-900 dark:text-white">Innovation Health</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400">
               {submissionRate >= 60 ? 'On track — submissions are progressing well.' : submissionRate >= 30 ? 'Moderate pace — encourage teams to submit soon.' : 'Low submission rate — consider sending reminders.'}
             </p>

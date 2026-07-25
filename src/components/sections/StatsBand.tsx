@@ -4,7 +4,7 @@ import { ClipboardList, Trophy, Calendar } from 'lucide-react';
 const STATS = [
   { icon: ClipboardList, value: '11',          label: 'Problem Statements', sub: 'Real-World Challenges' },
   { icon: Trophy,        value: '₹1,00,000',   label: 'Total Prize Value',  sub: 'Winning Teams' },
-  { icon: Calendar,      value: '01 Aug 2026', label: 'Hackathon Date',     sub: 'Mark Your Calendar' },
+  { icon: Calendar,      value: '01 Aug 2026', label: 'Innovation Date',     sub: 'Mark Your Calendar' },
 ];
 
 export default function StatsBand() {

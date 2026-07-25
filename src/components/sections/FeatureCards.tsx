@@ -9,10 +9,10 @@ export default function FeatureCards() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="section-eyebrow">Features</span>
           <h2 className="mt-4 font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
-            Everything you need to <span className="gradient-text">run a hackathon</span>
+            Everything you need to <span className="gradient-text">run an innovation</span>
           </h2>
           <p className="mt-4 text-slate-600 dark:text-slate-400">
-            From team registration to final submission tracking, Smart Ability Hackathon covers the entire lifecycle
+            From team registration to final submission tracking, Smart Ability Innovation covers the entire lifecycle
             with a premium, intuitive interface.
           </p>
         </div>

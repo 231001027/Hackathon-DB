@@ -5,13 +5,13 @@ interface LogoProps {
 }
 
 /**
- * SmartAbility hackathon logo — transparent SVG, scales perfectly at any size.
+ * SmartAbility innovation logo — transparent SVG, scales perfectly at any size.
  */
 export default function Logo({ size = 36, className = '' }: LogoProps) {
   return (
     <img
       src="/smartability-logo.png"
-      alt="SmartAbility Hackathon logo"
+      alt="SmartAbility Innovation logo"
       width={size}
       height={size}
       className={className}
