@@ -162,31 +162,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .from('teams')
         .insert({
           id: localTeam.id,
-          name: localTeam.teamName,
-          leader_id: user?.teamId || 'anonymous',
+          teamName: localTeam.teamName,
+          leaderName: localTeam.leaderName,
+          leaderEmail: localTeam.leaderEmail,
           college: localTeam.college,
-          password: localTeam.password,
-          status: 'draft',
-          created_at: new Date().toISOString(),
+          department: localTeam.department,
+          year: localTeam.year,
+          mobile: localTeam.mobile || null,
+          members: localTeam.members || [],
+          membersComplete: localTeam.membersComplete,
+          pdfName: localTeam.pdfName,
+          submissionStatus: localTeam.submissionStatus,
+          selectedProjectId: localTeam.selectedProjectId || null,
+          createdAt: localTeam.createdAt,
         })
         .then(({ error }) => {
           if (error) {
             logger.error('Failed to save team to Supabase:', error);
             // Log to activity_logs for debugging
             supabase.from('activity_logs').insert({
+              id: uid('log'),
               action: 'team_registration_error',
-              entity_type: 'team',
-              entity_id: localTeam.id,
-              error_message: error.message,
+              description: `Failed to register team ${localTeam.teamName}`,
+              metadata: { teamId: localTeam.id, error: error.message },
+              userEmail: localTeam.leaderEmail,
             });
           } else {
             logger.info('✅ Team successfully saved to Supabase:', localTeam.id);
             // Log successful registration
             supabase.from('activity_logs').insert({
+              id: uid('log'),
               action: 'team_registered',
-              entity_type: 'team',
-              entity_id: localTeam.id,
-              details: { team_name: localTeam.teamName },
+              description: `Team ${localTeam.teamName} registered`,
+              metadata: { teamId: localTeam.id, teamName: localTeam.teamName },
+              userEmail: localTeam.leaderEmail,
             });
           }
         })
@@ -236,29 +245,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       supabase
         .from('team_members')
         .insert({
+          id: uid('member'),
           team_id: teamId,
-          full_name: member.name,
+          name: member.name,
           email: member.email,
           department: member.department,
           year: member.year,
-          created_at: new Date().toISOString(),
         })
         .then(({ error }) => {
           if (error) {
             logger.error('Failed to save member to Supabase:', error);
             supabase.from('activity_logs').insert({
+              id: uid('log'),
               action: 'member_registration_error',
-              entity_type: 'team_member',
-              entity_id: teamId,
-              error_message: error.message,
+              description: `Failed to add member ${member.email} to team ${teamId}`,
+              metadata: { teamId, memberEmail: member.email, error: error.message },
+              userEmail: member.email,
             });
           } else {
             logger.info('✅ Member successfully saved to Supabase:', member.email);
             supabase.from('activity_logs').insert({
+              id: uid('log'),
               action: 'member_added',
-              entity_type: 'team_member',
-              entity_id: teamId,
-              details: { member_email: member.email },
+              description: `Member ${member.email} added to team`,
+              metadata: { teamId, memberEmail: member.email },
+              userEmail: member.email,
             });
           }
         })
@@ -294,11 +305,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       supabase
         .from('activity_logs')
         .insert({
+          id: uid('log'),
           action: 'pdf_uploaded',
-          entity_type: 'submission',
-          entity_id: user.teamId,
-          details: { file_name: fileName },
-          user_id: user.teamId,
+          description: `PDF submitted: ${fileName}`,
+          metadata: { fileName, teamId: user.teamId },
+          userEmail: user.email,
         })
         .then(({ error }) => {
           if (error) {

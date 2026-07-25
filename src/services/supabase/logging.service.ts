@@ -8,12 +8,11 @@
 import { supabase } from '@/config/supabase';
 
 export interface ActivityLog {
+  id?: string;
   action: string;
-  entity_type?: string;
-  entity_id?: string;
-  user_id?: string;
-  details?: Record<string, any>;
-  error_message?: string;
+  description?: string;
+  metadata?: Record<string, any>;
+  userEmail?: string;
 }
 
 /**
@@ -21,16 +20,16 @@ export interface ActivityLog {
  */
 export async function logActivity(log: ActivityLog): Promise<{ error: string | null }> {
   try {
+    const { uid } = await import('@/utils');
     const { error } = await supabase
       .from('activity_logs')
       .insert({
+        id: log.id || uid('log'),
         action: log.action,
-        entity_type: log.entity_type,
-        entity_id: log.entity_id,
-        user_id: log.user_id,
-        details: log.details || {},
-        error_message: log.error_message,
-        created_at: new Date().toISOString(),
+        description: log.description || '',
+        metadata: log.metadata || {},
+        userEmail: log.userEmail || null,
+        createdAt: new Date().toISOString(),
       });
 
     if (error) {
