@@ -14,7 +14,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-0 sm:space-y-0"
+          className="text-center space-y-4 sm:space-y-6"
         >
           <span className="section-eyebrow inline-flex items-center gap-1.5 justify-center">
             <Sparkles className="h-3.5 w-3.5" /> Innovation Challenge on Assistive Technology
