@@ -16,6 +16,7 @@ import Progress from '@/components/ui/Progress';
 import BgWatermark from '@/components/ui/BgWatermark';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import ProjectAbstractsList from '@/components/ProjectAbstractsList';
+import PDFViewer from '@/components/PDFViewer';
 
 function InfoRow({ icon: Icon, label, value }: { icon: LucideIcon; label: string; value: string }) {
   return (
@@ -227,6 +228,28 @@ export default function StudentDashboard() {
             selectedProjectId={team.selectedProjectId}
             onSelectProject={handleSelectProject}
             viewMode="list"
+          />
+        </motion.div>
+
+        {/* Reference Document Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 16 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.24 }}
+          className="space-y-4"
+        >
+          <div className="flex items-center gap-2">
+            <FileText className="h-6 w-6 text-brand-600 dark:text-brand-300" />
+            <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white">Reference Documents</h2>
+          </div>
+          <p className="text-slate-600 dark:text-slate-400">
+            Download or view the reference abstract key and submission guidelines for your project.
+          </p>
+          
+          <PDFViewer 
+            title="Abstract Submission Reference Key"
+            pdfUrl="/reference-abstract-key.pdf"
+            fileName="reference-abstract-key.pdf"
           />
         </motion.div>
       </div>
