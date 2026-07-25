@@ -32,7 +32,7 @@ export default function Hero() {
               <img 
                 src="/smartability-logo.png" 
                 alt="Smart Ability Innovation Logo"
-                className="h-32 w-32 sm:h-56 sm:w-56 lg:h-72 lg:w-72 object-contain drop-shadow-2xl"
+                className="h-48 w-48 sm:h-80 sm:w-80 lg:h-96 lg:w-96 object-contain drop-shadow-2xl"
               />
             </motion.div>
           </div>
