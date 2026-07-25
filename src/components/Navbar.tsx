@@ -40,10 +40,8 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Empty space on left */}
-        <div></div>
-
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8">
+        {/* Center Navigation Items */}
         <div className="hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => (
             <Link
@@ -56,7 +54,8 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Right Side - Theme Toggle & Auth */}
+        <div className="absolute right-4 flex items-center gap-2 sm:right-6 lg:right-8">
           <ThemeToggle />
 
           {user ? (
@@ -119,6 +118,7 @@ export default function Navbar() {
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
