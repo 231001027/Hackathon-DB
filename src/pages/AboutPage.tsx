@@ -45,9 +45,14 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="mx-auto max-w-3xl text-center">
             <span className="section-eyebrow">About SmartAbility</span>
-            <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
-              Innovation Challenge on <span className="gradient-text">Assistive Technology</span>
+            <h1 className="mt-5 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
+              <span className="text-purple-600 dark:text-purple-400">Smart Ability</span>
+              {' '}
+              <span className="text-amber-500 dark:text-amber-400">Innovation</span>
             </h1>
+            <p className="mt-5 text-base text-slate-600 dark:text-slate-400">
+              <span className="block font-semibold text-slate-900 dark:text-white">Innovation Challenge on Assistive Technology</span>
+            </p>
             <p className="mt-5 text-lg text-slate-600 dark:text-slate-400">
               SmartAbility is organised by the{' '}
               <span className="font-semibold text-slate-800 dark:text-slate-200">Centre of Excellence in Assistive Technology, Rajalakshmi Engineering College</span>,
