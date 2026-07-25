@@ -12,7 +12,6 @@ export interface ActivityLog {
   action: string;
   description?: string;
   metadata?: Record<string, any>;
-  userEmail?: string;
 }
 
 /**
@@ -28,7 +27,6 @@ export async function logActivity(log: ActivityLog): Promise<{ error: string | n
         action: log.action,
         description: log.description || '',
         metadata: log.metadata || {},
-        userEmail: log.userEmail || null,
       });
 
     if (error) {

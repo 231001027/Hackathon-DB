@@ -184,7 +184,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               action: 'team_registration_error',
               description: `Failed to register team ${localTeam.teamName}`,
               metadata: { teamId: localTeam.id, error: error.message },
-              userEmail: localTeam.leaderEmail,
             });
           } else {
             logger.info('✅ Team successfully saved to Supabase:', localTeam.id);
@@ -194,7 +193,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               action: 'team_registered',
               description: `Team ${localTeam.teamName} registered`,
               metadata: { teamId: localTeam.id, teamName: localTeam.teamName },
-              userEmail: localTeam.leaderEmail,
             });
           }
         })
@@ -259,7 +257,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               action: 'member_registration_error',
               description: `Failed to add member ${member.email} to team ${teamId}`,
               metadata: { teamId, memberEmail: member.email, error: error.message },
-              userEmail: member.email,
             });
           } else {
             logger.info('✅ Member successfully saved to Supabase:', member.email);
@@ -268,7 +265,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               action: 'member_added',
               description: `Member ${member.email} added to team`,
               metadata: { teamId, memberEmail: member.email },
-              userEmail: member.email,
             });
           }
         })
@@ -308,7 +304,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           action: 'pdf_uploaded',
           description: `PDF submitted: ${fileName}`,
           metadata: { fileName, teamId: user.teamId },
-          userEmail: user.email,
         })
         .then(({ error }) => {
           if (error) {
