@@ -16,7 +16,7 @@ export default function Hero() {
           transition={{ duration: 0.6 }}
           className="text-center space-y-4 sm:space-y-6"
         >
-          <span className="section-eyebrow inline-flex items-center gap-1.5 justify-center">
+          <span className="section-eyebrow inline-flex items-center gap-1 justify-center">
             <Sparkles className="h-3.5 w-3.5" /> Innovation Challenge on Assistive Technology
           </span>
           
@@ -32,11 +32,11 @@ export default function Hero() {
               <img 
                 src="/smartability-logo.png" 
                 alt="Smart Ability Innovation Logo"
-                className="h-48 w-48 sm:h-80 sm:w-80 lg:h-96 lg:w-96 object-contain drop-shadow-2xl"
+                className="h-40 w-40 sm:h-64 sm:w-64 lg:h-80 lg:w-80 object-contain drop-shadow-2xl"
               />
             </motion.div>
           </div>
-
+          
           {/* Subtitle */}
           <motion.p 
             initial={{ opacity: 0, y: 10 }}
