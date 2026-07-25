@@ -46,16 +46,6 @@ export default function LoginPage({ mode }: LoginProps) {
     }, 700);
   };
 
-  const fillDemo = () => {
-    if (isStudent) {
-      setEmail('aarav@college.edu');
-      setPassword('password123');
-    } else {
-      setEmail('admin@smartinnovation.com');
-      setPassword('admin123');
-    }
-  };
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-hero-mesh pt-24 pb-16">
       <div className="pointer-events-none absolute -top-10 left-1/4 h-72 w-72 rounded-full bg-brand-500/15 blur-[120px]" />
@@ -128,10 +118,6 @@ export default function LoginPage({ mode }: LoginProps) {
               )}
             </Button>
           </form>
-
-          <button onClick={fillDemo} className="mt-4 w-full rounded-xl border border-dashed border-slate-300 py-2.5 text-xs font-semibold text-slate-500 transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-slate-700 dark:text-slate-400 dark:hover:text-brand-300">
-            Use demo credentials
-          </button>
 
           <div className="mt-6 space-y-2 text-center text-sm text-slate-500 dark:text-slate-400">
             {isStudent ? (
