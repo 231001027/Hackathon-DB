@@ -9,7 +9,10 @@ export default function AdminLayout() {
     <div className="relative flex min-h-screen bg-slate-100 dark:bg-slate-950">
       <BgWatermark />
       <AdminSidebar />
-      <div key={location.pathname} className="relative z-10 flex-1 min-w-0 animate-fade-in">
+      <div
+        key={location.pathname}
+        className="relative z-10 flex-1 min-w-0 animate-fade-in"
+      >
         <Outlet />
       </div>
     </div>
