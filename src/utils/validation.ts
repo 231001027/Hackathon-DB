@@ -172,7 +172,7 @@ export function checkRateLimit(
  */
 export function isDuplicateEmail(
   email: string,
-  teams: Array<{ leaderEmail: string; members: Array<{ email: string }> }>,
+  teams: Array<{ leaderemail: string; members: Array<{ email: string }> }>,
   excludeTeamId?: string
 ): boolean {
   if (!email || typeof email !== 'string') return false;
@@ -180,7 +180,7 @@ export function isDuplicateEmail(
 
   return teams.some((team) => {
     // Check leader email
-    if (team.leaderEmail?.toLowerCase() === e) return true;
+    if (team.leaderemail?.toLowerCase() === e) return true;
     // Check member emails
     if (Array.isArray(team.members)) {
       return team.members.some((m) => m.email?.toLowerCase() === e);

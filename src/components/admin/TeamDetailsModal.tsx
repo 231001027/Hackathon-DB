@@ -22,7 +22,7 @@ export default function TeamDetailsModal({ open, onClose, team }: Props) {
             <Avatar name={team.leaderName} size="lg" />
             <div>
               <p className="font-display text-base font-bold text-slate-900 dark:text-white">{team.leaderName}</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">{team.leaderEmail}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">{team.leaderemail}</p>
             </div>
           </div>
           <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-3 py-1 text-xs font-bold text-white">

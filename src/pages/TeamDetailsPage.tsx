@@ -88,7 +88,7 @@ export default function TeamDetailsPage() {
               <Avatar name={team.leaderName} size="md" />
               <div className="flex-1">
                 <p className="text-sm font-bold text-slate-900 dark:text-white">{team.leaderName}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{team.leaderEmail}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{team.leaderemail}</p>
               </div>
               <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-2.5 py-1 text-[11px] font-bold text-white">
                 <Crown className="h-3 w-3" /> Leader

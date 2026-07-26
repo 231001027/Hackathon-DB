@@ -11,7 +11,7 @@ import type { Team, TeamMember } from '@/types';
 interface FormState {
   teamName: string;
   leaderName: string;
-  leaderEmail: string;
+  leaderemail: string;
   password: string;
   confirmPassword: string;
   college: string;
@@ -30,7 +30,7 @@ export default function TeamLeaderRegisterPage() {
 
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({
-    teamName: '', leaderName: '', leaderEmail: '', password: '', confirmPassword: '', college: '', department: '', year: '', mobile: '', members: [emptyMember()],
+    teamName: '', leaderName: '', leaderemail: '', password: '', confirmPassword: '', college: '', department: '', year: '', mobile: '', members: [emptyMember()],
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -61,9 +61,9 @@ export default function TeamLeaderRegisterPage() {
     const e: Record<string, string> = {};
     if (!form.teamName.trim()) e.teamName = 'Team name is required';
     if (!form.leaderName.trim()) e.leaderName = 'Leader name is required';
-    if (!form.leaderEmail.trim()) e.leaderEmail = 'Email is required';
-    else if (!isValidEmail(form.leaderEmail)) e.leaderEmail = 'Enter a valid email address';
-    else if (isDuplicateEmail(teams, form.leaderEmail)) e.leaderEmail = 'This email is already registered';
+    if (!form.leaderemail.trim()) e.leaderemail = 'Email is required';
+    else if (!isValidEmail(form.leaderemail)) e.leaderemail = 'Enter a valid email address';
+    else if (isDuplicateEmail(teams, form.leaderemail)) e.leaderemail = 'This email is already registered';
     if (!form.password) e.password = 'Password is required';
     else if (form.password.length < 8) e.password = 'Password must be at least 8 characters';
     if (form.confirmPassword !== form.password) e.confirmPassword = 'Passwords do not match';
@@ -84,7 +84,7 @@ export default function TeamLeaderRegisterPage() {
 
   const validateStep2 = (): boolean => {
     const e: Record<string, string> = {};
-    const emails = new Set<string>([form.leaderEmail.trim().toLowerCase()]);
+    const emails = new Set<string>([form.leaderemail.trim().toLowerCase()]);
     form.members.forEach((m, idx) => {
       if (!m.name.trim() && !m.email.trim() && !m.department && !m.year) return;
       if (!m.name.trim()) e[`member-${idx}-name`] = 'Name required';
@@ -122,7 +122,7 @@ export default function TeamLeaderRegisterPage() {
       const payload: Omit<Team, 'id' | 'pdfName' | 'submissionStatus' | 'submissionDate' | 'createdAt' | 'membersComplete' | 'selectedProjectId'> = {
         teamName: form.teamName.trim(),
         leaderName: form.leaderName.trim(),
-        leaderEmail: form.leaderEmail.trim().toLowerCase(),
+        leaderemail: form.leaderemail.trim().toLowerCase(),
         password: form.password,
         college: form.college.trim(),
         department: form.department,
@@ -190,8 +190,8 @@ export default function TeamLeaderRegisterPage() {
                   </div>
                   <div>
                     <label className="label-text"><Mail className="mr-1 inline h-4 w-4" /> Leader Email</label>
-                    <input className="input-field" value={form.leaderEmail} onChange={(e) => update('leaderEmail', e.target.value)} placeholder="leader@college.edu" />
-                    {fieldError('leaderEmail') && <p className="mt-1 text-xs text-rose-500">{fieldError('leaderEmail')}</p>}
+                    <input className="input-field" value={form.leaderemail} onChange={(e) => update('leaderemail', e.target.value)} placeholder="leader@college.edu" />
+                    {fieldError('leaderemail') && <p className="mt-1 text-xs text-rose-500">{fieldError('leaderemail')}</p>}
                   </div>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
