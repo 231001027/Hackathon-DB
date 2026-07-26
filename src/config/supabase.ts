@@ -8,7 +8,7 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/supabase';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+let supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Validate required environment variables
@@ -19,6 +19,15 @@ if (!supabaseUrl) {
 if (!supabaseAnonKey) {
   throw new Error('Missing VITE_SUPABASE_ANON_KEY environment variable');
 }
+
+// CRITICAL: Remove /rest/v1 from URL if present - Supabase client adds it automatically
+if (supabaseUrl.includes('/rest/v1')) {
+  console.warn('⚠️ [Supabase Config] URL contains /rest/v1 suffix. Removing it...');
+  supabaseUrl = supabaseUrl.replace('/rest/v1', '');
+  console.log('✅ [Supabase Config] Corrected URL:', supabaseUrl);
+}
+
+console.log('🔧 [Supabase Config] Initializing with URL:', supabaseUrl);
 
 /**
  * Supabase client instance
