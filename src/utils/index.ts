@@ -115,9 +115,9 @@ export function uid(prefix = 'id'): string {
 
 export function findTeamByEmail(teams: Team[], email: string): { team: Team; isLeader: boolean } | null {
   const e = email.trim().toLowerCase();
-  const team = teams.find((t) => t.leaderemail.toLowerCase() === e);
+  const team = teams.find((t) => t.leaderemail && t.leaderemail.toLowerCase() === e);
   if (team) return { team, isLeader: true };
-  const asMember = teams.find((t) => t.members.some((m) => m.email.toLowerCase() === e));
+  const asMember = teams.find((t) => t.members.some((m) => m.email && m.email.toLowerCase() === e));
   if (asMember) return { team: asMember, isLeader: false };
   return null;
 }
@@ -127,8 +127,8 @@ export function isDuplicateEmail(teams: Team[], email: string, excludeTeamId?: s
   return teams.some(
     (t) =>
       t.id !== excludeTeamId &&
-      (t.leaderemail.toLowerCase() === e ||
-        t.members.some((m) => m.email.toLowerCase() === e)),
+      ((t.leaderemail && t.leaderemail.toLowerCase() === e) ||
+        t.members.some((m) => m.email && m.email.toLowerCase() === e)),
   );
 }
 
