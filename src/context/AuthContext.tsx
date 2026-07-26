@@ -158,23 +158,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Also try to save to Supabase (fire-and-forget for now)
       // This ensures data is persisted even if there are delays
+      const supabaseTeam = {
+        id: localTeam.id,
+        teamName: localTeam.teamName,
+        leaderName: localTeam.leaderName,
+        leaderEmail: localTeam.leaderEmail,
+        college: localTeam.college,
+        department: localTeam.department,
+        year: String(localTeam.year),
+        mobile: localTeam.mobile || null,
+        members: JSON.stringify(localTeam.members || []),
+        membersComplete: localTeam.membersComplete,
+        pdfName: localTeam.pdfName,
+        submissionStatus: localTeam.submissionStatus,
+        selectedProjectId: localTeam.selectedProjectId || null,
+      };
+
       supabase
         .from('teams')
-        .insert({
-          id: localTeam.id,
-          teamName: localTeam.teamName,
-          leaderName: localTeam.leaderName,
-          leaderEmail: localTeam.leaderEmail,
-          college: localTeam.college,
-          department: localTeam.department,
-          year: localTeam.year,
-          mobile: localTeam.mobile || null,
-          members: localTeam.members || [],
-          membersComplete: localTeam.membersComplete,
-          pdfName: localTeam.pdfName,
-          submissionStatus: localTeam.submissionStatus,
-          selectedProjectId: localTeam.selectedProjectId || null,
-        })
+        .insert(supabaseTeam)
         .then(({ error }) => {
           if (error) {
             logger.error('Failed to save team to Supabase:', error);
@@ -238,38 +240,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       );
       logger.info('Member added to local state:', member.email);
 
-      // Save to Supabase (fire-and-forget)
+      // Verify team exists in Supabase before adding member
       supabase
-        .from('team_members')
-        .insert({
-          id: uid('member'),
-          team_id: teamId,
-          name: member.name,
-          email: member.email,
-          department: member.department,
-          year: member.year,
-        })
-        .then(({ error }) => {
-          if (error) {
-            logger.error('Failed to save member to Supabase:', error);
-            supabase.from('activity_logs').insert({
-              id: uid('log'),
-              action: 'member_registration_error',
-              description: `Failed to add member ${member.email} to team ${teamId}`,
-              metadata: { teamId, memberEmail: member.email, error: error.message },
-            });
-          } else {
-            logger.info('✅ Member successfully saved to Supabase:', member.email);
-            supabase.from('activity_logs').insert({
-              id: uid('log'),
-              action: 'member_added',
-              description: `Member ${member.email} added to team`,
-              metadata: { teamId, memberEmail: member.email },
-            });
+        .from('teams')
+        .select('id')
+        .eq('id', teamId)
+        .single()
+        .then(({ data, error: selectError }) => {
+          if (selectError || !data) {
+            logger.error('Team not found in Supabase, cannot add member:', teamId);
+            return;
           }
+
+          // Team exists, now insert member (fire-and-forget)
+          supabase
+            .from('team_members')
+            .insert({
+              id: uid('member'),
+              team_id: teamId,
+              name: member.name,
+              email: member.email,
+              department: member.department,
+              year: String(member.year),
+            })
+            .then(({ error }) => {
+              if (error) {
+                logger.error('Failed to save member to Supabase:', error);
+                supabase.from('activity_logs').insert({
+                  id: uid('log'),
+                  action: 'member_registration_error',
+                  description: `Failed to add member ${member.email} to team ${teamId}`,
+                  metadata: { teamId, memberEmail: member.email, error: error.message },
+                });
+              } else {
+                logger.info('✅ Member successfully saved to Supabase:', member.email);
+                supabase.from('activity_logs').insert({
+                  id: uid('log'),
+                  action: 'member_added',
+                  description: `Member ${member.email} added to team`,
+                  metadata: { teamId, memberEmail: member.email },
+                });
+              }
+            })
+            .catch((err) => {
+              logger.error('Supabase connection error:', err);
+            });
         })
         .catch((err) => {
-          logger.error('Supabase connection error:', err);
+          logger.error('Failed to verify team existence:', err);
         });
     } catch (error) {
       logger.error('registerMemberToTeam error:', error);
