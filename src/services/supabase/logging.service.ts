@@ -1,8 +1,6 @@
 /**
  * Supabase Activity Logging Service
  * Tracks all user actions for debugging and auditing
- * 
- * @module services/supabase/logging.service
  */
 
 import { supabase } from '@/config/supabase';
@@ -17,9 +15,12 @@ export interface ActivityLog {
 /**
  * Log an activity
  */
-export async function logActivity(log: ActivityLog): Promise<{ error: string | null }> {
+export async function logActivity(
+  log: ActivityLog
+): Promise<{ error: string | null }> {
   try {
     const { uid } = await import('@/utils');
+
     const { error } = await supabase
       .from('activity_logs')
       .insert({
@@ -37,7 +38,9 @@ export async function logActivity(log: ActivityLog): Promise<{ error: string | n
     console.log(`✅ Activity logged: ${log.action}`);
     return { error: null };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to log activity';
+    const message =
+      error instanceof Error ? error.message : 'Failed to log activity';
+
     console.error('❌ Logging error:', message);
     return { error: message };
   }
@@ -46,12 +49,12 @@ export async function logActivity(log: ActivityLog): Promise<{ error: string | n
 /**
  * Get recent activity logs
  */
-export async function getActivityLogs(limit = 100): Promise<{ logs: any[] | null; error: string | null }> {
+export async function getActivityLogs(limit = 100) {
   try {
     const { data, error } = await supabase
       .from('activity_logs')
       .select('*')
-      .order('createdAt', { ascending: false })
+      .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error) {
@@ -60,7 +63,9 @@ export async function getActivityLogs(limit = 100): Promise<{ logs: any[] | null
 
     return { logs: data, error: null };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch activity logs';
+    const message =
+      error instanceof Error ? error.message : 'Failed to fetch activity logs';
+
     return { logs: null, error: message };
   }
 }
@@ -68,13 +73,16 @@ export async function getActivityLogs(limit = 100): Promise<{ logs: any[] | null
 /**
  * Get activity logs by action
  */
-export async function getActivityLogsByAction(action: string, limit = 50): Promise<{ logs: any[] | null; error: string | null }> {
+export async function getActivityLogsByAction(
+  action: string,
+  limit = 50
+) {
   try {
     const { data, error } = await supabase
       .from('activity_logs')
       .select('*')
       .eq('action', action)
-      .order('createdAt', { ascending: false })
+      .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error) {
@@ -83,7 +91,9 @@ export async function getActivityLogsByAction(action: string, limit = 50): Promi
 
     return { logs: data, error: null };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch activity logs';
+    const message =
+      error instanceof Error ? error.message : 'Failed to fetch activity logs';
+
     return { logs: null, error: message };
   }
 }
@@ -91,14 +101,15 @@ export async function getActivityLogsByAction(action: string, limit = 50): Promi
 /**
  * Get activity logs by user
  */
-export async function getActivityLogsByUser(userId: string, limit = 50): Promise<{ logs: any[] | null; error: string | null }> {
+export async function getActivityLogsByUser(
+  userId: string,
+  limit = 50
+) {
   try {
-    // Note: activity_logs doesn't have user_id column, so we just return empty for now
-    // or return recent logs instead
     const { data, error } = await supabase
       .from('activity_logs')
       .select('*')
-      .order('createdAt', { ascending: false })
+      .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error) {
@@ -107,20 +118,22 @@ export async function getActivityLogsByUser(userId: string, limit = 50): Promise
 
     return { logs: data, error: null };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch activity logs';
+    const message =
+      error instanceof Error ? error.message : 'Failed to fetch activity logs';
+
     return { logs: null, error: message };
   }
 }
 
 /**
- * Clear activity logs (admin only)
+ * Clear activity logs
  */
-export async function clearActivityLogs(): Promise<{ error: string | null }> {
+export async function clearActivityLogs() {
   try {
     const { error } = await supabase
       .from('activity_logs')
       .delete()
-      .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+      .neq('id', '00000000-0000-0000-0000-000000000000');
 
     if (error) {
       return { error: error.message };
@@ -128,20 +141,17 @@ export async function clearActivityLogs(): Promise<{ error: string | null }> {
 
     return { error: null };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to clear activity logs';
+    const message =
+      error instanceof Error ? error.message : 'Failed to clear activity logs';
+
     return { error: message };
   }
 }
 
 /**
- * Get activity statistics
+ * Activity statistics
  */
-export async function getActivityStats(): Promise<{
-  totalRegistrations: number;
-  totalErrors: number;
-  totalUploads: number;
-  error: string | null;
-}> {
+export async function getActivityStats() {
   try {
     const { data, error } = await supabase
       .from('activity_logs')
@@ -156,18 +166,19 @@ export async function getActivityStats(): Promise<{
       };
     }
 
-    const registrations = data?.filter((log: any) => log.action === 'team_registered').length || 0;
-    const errors = data?.filter((log: any) => log.action.includes('error')).length || 0;
-    const uploads = data?.filter((log: any) => log.action === 'pdf_uploaded').length || 0;
-
     return {
-      totalRegistrations: registrations,
-      totalErrors: errors,
-      totalUploads: uploads,
+      totalRegistrations:
+        data?.filter((x: any) => x.action === 'team_registered').length ?? 0,
+      totalErrors:
+        data?.filter((x: any) => x.action.includes('error')).length ?? 0,
+      totalUploads:
+        data?.filter((x: any) => x.action === 'pdf_uploaded').length ?? 0,
       error: null,
     };
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch activity stats';
+    const message =
+      error instanceof Error ? error.message : 'Failed to fetch activity stats';
+
     return {
       totalRegistrations: 0,
       totalErrors: 0,
