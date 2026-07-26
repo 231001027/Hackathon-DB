@@ -176,26 +176,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       supabase
         .from('teams')
-        .insert(supabaseTeam)
+        .insert([supabaseTeam])
         .then(({ error }) => {
           if (error) {
             logger.error('Failed to save team to Supabase:', error);
             // Log to activity_logs for debugging
-            supabase.from('activity_logs').insert({
+            supabase.from('activity_logs').insert([{
               id: uid('log'),
               action: 'team_registration_error',
               description: `Failed to register team ${localTeam.teamName}`,
               metadata: { teamId: localTeam.id, error: error.message },
-            });
+            }]);
           } else {
             logger.info('✅ Team successfully saved to Supabase:', localTeam.id);
             // Log successful registration
-            supabase.from('activity_logs').insert({
+            supabase.from('activity_logs').insert([{
               id: uid('log'),
               action: 'team_registered',
               description: `Team ${localTeam.teamName} registered`,
               metadata: { teamId: localTeam.id, teamName: localTeam.teamName },
-            });
+            }]);
           }
         })
         .catch((err) => {
@@ -255,31 +255,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // Team exists, now insert member (fire-and-forget)
           supabase
             .from('team_members')
-            .insert({
+            .insert([{
               id: uid('member'),
               team_id: teamId,
               name: member.name,
               email: member.email,
               department: member.department,
               year: String(member.year),
-            })
+            }])
             .then(({ error }) => {
               if (error) {
                 logger.error('Failed to save member to Supabase:', error);
-                supabase.from('activity_logs').insert({
+                supabase.from('activity_logs').insert([{
                   id: uid('log'),
                   action: 'member_registration_error',
                   description: `Failed to add member ${member.email} to team ${teamId}`,
                   metadata: { teamId, memberEmail: member.email, error: error.message },
-                });
+                }]);
               } else {
                 logger.info('✅ Member successfully saved to Supabase:', member.email);
-                supabase.from('activity_logs').insert({
+                supabase.from('activity_logs').insert([{
                   id: uid('log'),
                   action: 'member_added',
                   description: `Member ${member.email} added to team`,
                   metadata: { teamId, memberEmail: member.email },
-                });
+                }]);
               }
             })
             .catch((err) => {
@@ -317,12 +317,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Log to Supabase
       supabase
         .from('activity_logs')
-        .insert({
+        .insert([{
           id: uid('log'),
           action: 'pdf_uploaded',
           description: `PDF submitted: ${fileName}`,
           metadata: { fileName, teamId: user.teamId },
-        })
+        }])
         .then(({ error }) => {
           if (error) {
             logger.error('Failed to log PDF upload:', error);
