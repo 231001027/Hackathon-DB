@@ -104,8 +104,18 @@ export default function TeamLeaderRegisterPage() {
   };
 
   const next = () => {
-    if (step === 0 && !validateStep0()) return;
-    if (step === 1 && !validateStep1()) return;
+    if (step === 0) {
+      if (!validateStep0()) {
+        error('Complete step 1', 'Please fix the errors above before continuing');
+        return;
+      }
+    }
+    if (step === 1) {
+      if (!validateStep1()) {
+        error('Complete step 2', 'Please fix the errors above before continuing');
+        return;
+      }
+    }
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
   };
   const back = () => setStep((s) => Math.max(s - 1, 0));
