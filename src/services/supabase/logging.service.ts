@@ -1,10 +1,7 @@
 /**
  * Supabase Activity Logging Service
  * Tracks all user actions for debugging and auditing
- *
- * @module services/supabase/logging.service
  */
-
 import { supabase } from '@/config/supabase';
 
 export interface ActivityLog {
@@ -42,7 +39,6 @@ export async function logActivity(
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Failed to log activity';
-
     console.error('❌ Logging error:', message);
     return { error: message };
   }
@@ -51,9 +47,7 @@ export async function logActivity(
 /**
  * Get recent activity logs
  */
-export async function getActivityLogs(
-  limit = 100
-): Promise<{ logs: any[] | null; error: string | null }> {
+export async function getActivityLogs(limit = 100) {
   try {
     const { data, error } = await supabase
       .from('activity_logs')
@@ -77,10 +71,7 @@ export async function getActivityLogs(
 /**
  * Get activity logs by action
  */
-export async function getActivityLogsByAction(
-  action: string,
-  limit = 50
-): Promise<{ logs: any[] | null; error: string | null }> {
+export async function getActivityLogsByAction(action: string, limit = 50) {
   try {
     const { data, error } = await supabase
       .from('activity_logs')
@@ -105,12 +96,8 @@ export async function getActivityLogsByAction(
 /**
  * Get activity logs by user
  */
-export async function getActivityLogsByUser(
-  userId: string,
-  limit = 50
-): Promise<{ logs: any[] | null; error: string | null }> {
+export async function getActivityLogsByUser(userId: string, limit = 50) {
   try {
-    // activity_logs table doesn't have a user_id column
     const { data, error } = await supabase
       .from('activity_logs')
       .select('*')
@@ -133,9 +120,7 @@ export async function getActivityLogsByUser(
 /**
  * Clear activity logs
  */
-export async function clearActivityLogs(): Promise<{
-  error: string | null;
-}> {
+export async function clearActivityLogs() {
   try {
     const { error } = await supabase
       .from('activity_logs')
@@ -156,14 +141,9 @@ export async function clearActivityLogs(): Promise<{
 }
 
 /**
- * Get activity statistics
+ * Activity statistics
  */
-export async function getActivityStats(): Promise<{
-  totalRegistrations: number;
-  totalErrors: number;
-  totalUploads: number;
-  error: string | null;
-}> {
+export async function getActivityStats() {
   try {
     const { data, error } = await supabase
       .from('activity_logs')
@@ -178,26 +158,18 @@ export async function getActivityStats(): Promise<{
       };
     }
 
-    const registrations =
-      data?.filter((log: any) => log.action === 'team_registered').length || 0;
-
-    const errors =
-      data?.filter((log: any) => log.action.includes('error')).length || 0;
-
-    const uploads =
-      data?.filter((log: any) => log.action === 'pdf_uploaded').length || 0;
-
     return {
-      totalRegistrations: registrations,
-      totalErrors: errors,
-      totalUploads: uploads,
+      totalRegistrations:
+        data?.filter((x: any) => x.action === 'team_registered').length ?? 0,
+      totalErrors:
+        data?.filter((x: any) => x.action.includes('error')).length ?? 0,
+      totalUploads:
+        data?.filter((x: any) => x.action === 'pdf_uploaded').length ?? 0,
       error: null,
     };
   } catch (error) {
     const message =
-      error instanceof Error
-        ? error.message
-        : 'Failed to fetch activity stats';
+      error instanceof Error ? error.message : 'Failed to fetch activity stats';
 
     return {
       totalRegistrations: 0,
