@@ -52,7 +52,7 @@ export async function getActivityLogs(limit = 100) {
     const { data, error } = await supabase
       .from('activity_logs')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('createdAt', { ascending: false })
       .limit(limit);
 
     if (error) {
@@ -77,7 +77,7 @@ export async function getActivityLogsByAction(action: string, limit = 50) {
       .from('activity_logs')
       .select('*')
       .eq('action', action)
-      .order('created_at', { ascending: false })
+      .order('createdAt', { ascending: false })
       .limit(limit);
 
     if (error) {
@@ -101,7 +101,7 @@ export async function getActivityLogsByUser(userId: string, limit = 50) {
     const { data, error } = await supabase
       .from('activity_logs')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('createdAt', { ascending: false })
       .limit(limit);
 
     if (error) {
