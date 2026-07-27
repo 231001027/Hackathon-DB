@@ -13,6 +13,11 @@ export default function PDFViewer({
   fileName = 'reference-abstract-key.pdf'
 }: PDFViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [iframeError, setIframeError] = useState(false);
+
+  // For iframe PDF loading, we use the PDF URL directly
+  // For browsers without PDF.js support, we provide download fallback
+  const iframeUrl = pdfUrl.endsWith('#') ? pdfUrl : `${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`;
 
   return (
     <div className="space-y-3">
@@ -30,7 +35,10 @@ export default function PDFViewer({
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => setIsOpen(true)}
+              onClick={() => {
+                setIsOpen(true);
+                setIframeError(false);
+              }}
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-brand-600 transition-colors hover:bg-brand-50 dark:text-brand-300 dark:hover:bg-brand-500/10"
             >
               <Eye className="h-4 w-4" />
@@ -82,11 +90,34 @@ export default function PDFViewer({
 
             {/* PDF Viewer */}
             <div className="overflow-auto bg-slate-50 dark:bg-slate-900">
-              <iframe
-                src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
-                className="h-[calc(90vh-60px)] w-full border-0"
-                title={title}
-              />
+              {!iframeError ? (
+                <iframe
+                  src={iframeUrl}
+                  className="h-[calc(90vh-120px)] w-full border-0"
+                  title={title}
+                  onError={() => setIframeError(true)}
+                  sandbox="allow-same-origin allow-scripts"
+                />
+              ) : (
+                <div className="h-[calc(90vh-120px)] flex flex-col items-center justify-center gap-4">
+                  <div className="text-center">
+                    <p className="text-slate-600 dark:text-slate-300 font-semibold mb-2">
+                      Unable to display PDF in browser
+                    </p>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
+                      This might happen due to browser restrictions or file access issues.
+                    </p>
+                    <a
+                      href={pdfUrl}
+                      download={fileName}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors"
+                    >
+                      <Download className="h-4 w-4" />
+                      Download PDF Instead
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Note */}
