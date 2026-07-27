@@ -158,22 +158,17 @@ export default function TeamLeaderRegisterPage() {
         members: cleanMembers,
       };
       console.log('🚀 [TeamLeaderRegisterPage] Calling registerTeam with payload:', payload);
-      registerTeam(payload).then((res) => {
-        console.log('✅ [TeamLeaderRegisterPage] registerTeam response:', res);
-        setSubmitting(false);
-        if (res.ok) {
-          success('Team registered!', `Welcome, ${form.teamName}. You can now log in.`);
-          navigate('/student-login');
-        } else {
-          const errorMsg = typeof res.message === 'string' ? res.message : 'Registration failed. Please try again.';
-          console.error('❌ [TeamLeaderRegisterPage] Registration failed:', errorMsg);
-          error('Registration failed', errorMsg);
-        }
-      }).catch((err) => {
-        console.error('❌ [TeamLeaderRegisterPage] Error in registerTeam:', err);
-        setSubmitting(false);
-        error('Registration error', 'An unexpected error occurred');
-      });
+      const res = registerTeam(payload);
+      console.log('✅ [TeamLeaderRegisterPage] registerTeam response:', res);
+      setSubmitting(false);
+      if (res.ok) {
+        success('Team registered!', `Welcome, ${form.teamName}. You can now log in.`);
+        navigate('/student-login');
+      } else {
+        const errorMsg = typeof res.message === 'string' ? res.message : 'Registration failed. Please try again.';
+        console.error('❌ [TeamLeaderRegisterPage] Registration failed:', errorMsg);
+        error('Registration failed', errorMsg);
+      }
     }, 800);
   };
 

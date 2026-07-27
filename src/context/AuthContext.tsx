@@ -131,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { ok: false, message: 'Invalid admin credentials.' };
   };
 
-  const registerTeam: AuthContextValue['registerTeam'] = async (data) => {
+  const registerTeam: AuthContextValue['registerTeam'] = (data) => {
     try {
       logger.info('registerTeam called with data:', data);
       
@@ -175,24 +175,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         college: localTeam.college,
         department: localTeam.department,
         year: String(localTeam.year),
-        mobile: localTeam.mobile || null,
+        mobile: localTeam.mobile || '',
         members: JSON.stringify(localTeam.members || []),
         membersComplete: localTeam.membersComplete,
         pdfName: localTeam.pdfName,
         submissionStatus: localTeam.submissionStatus,
         submissionDate: localTeam.submissionDate,
-        selectedProjectId: localTeam.selectedProjectId || null,
         createdAt: localTeam.createdAt,
       };
 
       logger.info('Attempting Supabase insert...');
+      logger.debug('Supabase team object:', supabaseTeam);
       supabase
         .from('teams')
         .insert([supabaseTeam])
         .then(({ data, error }) => {
           if (error) {
             const errorMsg = error instanceof Error ? error.message : String(error);
-            logger.error('❌ Failed to save team to Supabase:', errorMsg, error);
+            logger.error('❌ Failed to save team to Supabase:', errorMsg);
+            logger.error('Full error details:', error);
+            logger.debug('Attempted to insert:', supabaseTeam);
             // Log to activity_logs for debugging
             supabase.from('activity_logs').insert([{
               id: uid('log'),
