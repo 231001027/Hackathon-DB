@@ -9,7 +9,7 @@ interface PDFViewerProps {
 
 export default function PDFViewer({ 
   title = 'Reference Document', 
-  pdfUrl = '/Reference abstract.key.pdf',
+  pdfUrl = '/Reference%20abstract.key.pdf',
   fileName = 'Reference abstract.key.pdf'
 }: PDFViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,9 @@ export default function PDFViewer({
 
   // For iframe PDF loading, we use the PDF URL directly
   // For browsers without PDF.js support, we provide download fallback
-  const iframeUrl = pdfUrl.endsWith('#') ? pdfUrl : `${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`;
+  // Ensure URL is properly encoded for spaces and special characters
+  const encodedPdfUrl = pdfUrl.includes('%20') ? pdfUrl : pdfUrl.replace(/ /g, '%20');
+  const iframeUrl = encodedPdfUrl.endsWith('#') ? encodedPdfUrl : `${encodedPdfUrl}#toolbar=1&navpanes=0&scrollbar=1`;
 
   return (
     <div className="space-y-3">
