@@ -175,12 +175,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         college: localTeam.college,
         department: localTeam.department,
         year: String(localTeam.year),
-        mobile: localTeam.mobile || '',
+        mobile: localTeam.mobile && localTeam.mobile.trim() ? localTeam.mobile.trim() : '',
         members: JSON.stringify(localTeam.members || []),
-        membersComplete: localTeam.membersComplete,
-        pdfName: localTeam.pdfName,
+        membersComplete: Boolean(localTeam.membersComplete),
+        pdfName: localTeam.pdfName || null,
         submissionStatus: localTeam.submissionStatus,
-        submissionDate: localTeam.submissionDate,
+        submissionDate: localTeam.submissionDate || null,
         createdAt: localTeam.createdAt,
       };
 
@@ -191,7 +191,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .insert([supabaseTeam])
         .then(({ data, error }) => {
           if (error) {
-            const errorMsg = error instanceof Error ? error.message : String(error);
+            // Extract error message properly
+            let errorMsg = 'Unknown error';
+            if (error && typeof error === 'object') {
+              errorMsg = (error as any).message || (error as any).hint || JSON.stringify(error);
+            } else if (error instanceof Error) {
+              errorMsg = error.message;
+            } else {
+              errorMsg = String(error);
+            }
             logger.error('❌ Failed to save team to Supabase:', errorMsg);
             logger.error('Full error details:', error);
             logger.debug('Attempted to insert:', supabaseTeam);
@@ -200,7 +208,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               id: uid('log'),
               action: 'team_registration_error',
               description: `Failed to register team ${localTeam.teamName}: ${errorMsg}`,
-              metadata: { teamId: localTeam.id, error: errorMsg },
+              metadata: { teamId: localTeam.id, error: errorMsg, fullError: String(error) },
             }]);
           } else {
             logger.info('✅ Team successfully saved to Supabase:', localTeam.id, data);
@@ -214,7 +222,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         })
         .catch((err) => {
-          const errorMsg = err instanceof Error ? err.message : String(err);
+          let errorMsg = 'Unknown error';
+          if (err instanceof Error) {
+            errorMsg = err.message;
+          } else {
+            errorMsg = String(err);
+          }
           logger.error('Supabase connection error:', errorMsg);
         });
 
