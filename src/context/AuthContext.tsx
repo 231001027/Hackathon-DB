@@ -63,7 +63,34 @@ interface AuthContextValue {
   logout: () => void;
   deleteTeam: (teamId: string) => void;
   refreshTeams: () => Promise<void>;
+  /** Merge previously registered local/imported teams into admin list and push to DB */
+  recoverTeams: (incoming: Team[]) => Promise<{ ok: boolean; message: string; recovered: number }>;
   resetToSeedData: () => void;
+}
+
+/** Keep every team from local + remote; remote wins on same id/email */
+function mergeTeams(local: Team[], remote: Team[]): Team[] {
+  const byId = new Map<string, Team>();
+  const byEmail = new Map<string, string>();
+
+  const add = (team: Team, prefer: boolean) => {
+    const email = team.leaderEmail?.trim().toLowerCase() || '';
+    const existingId = email ? byEmail.get(email) : undefined;
+    if (existingId && existingId !== team.id) {
+      if (!prefer) return;
+      byId.delete(existingId);
+    }
+    if (byId.has(team.id) && !prefer) return;
+    byId.set(team.id, team);
+    if (email) byEmail.set(email, team.id);
+  };
+
+  for (const t of local) add(t, false);
+  for (const t of remote) add(t, true);
+
+  return Array.from(byId.values()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -95,22 +122,75 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshTeams = async () => {
     try {
       setTeamsLoading(true);
+      const local = loadTeams();
       const { teams: remote, error } = await getAllTeams();
       if (error) {
         logger.error('Failed to load teams from Supabase, keeping local cache', error);
-        setTeams(loadTeams());
+        setTeams(local);
         return;
       }
-      if (remote) {
-        logger.info(`Loaded ${remote.length} teams from Supabase`);
-        setTeams(remote);
-        saveTeams(remote);
-      }
+      // Never wipe older local registrations when remote is empty/partial
+      const merged = mergeTeams(local, remote || []);
+      logger.info(`Loaded teams (local=${local.length}, remote=${remote?.length ?? 0}, merged=${merged.length})`);
+      setTeams(merged);
+      saveTeams(merged);
     } catch (err) {
       logger.error('refreshTeams failed', err);
       setTeams(loadTeams());
     } finally {
       setTeamsLoading(false);
+    }
+  };
+
+  const recoverTeams: AuthContextValue['recoverTeams'] = async (incoming) => {
+    try {
+      if (!Array.isArray(incoming) || incoming.length === 0) {
+        return { ok: false, message: 'No teams found to recover.', recovered: 0 };
+      }
+
+      const cleaned = incoming
+        .filter((t) => t && t.teamName && t.leaderEmail)
+        .map((t) => ({
+          ...t,
+          id: t.id || uid('team'),
+          leaderEmail: String(t.leaderEmail).trim().toLowerCase(),
+          members: Array.isArray(t.members) ? t.members : [],
+          membersComplete: Boolean(t.membersComplete),
+          pdfName: t.pdfName ?? null,
+          submissionStatus: t.submissionStatus || 'not_started',
+          submissionDate: t.submissionDate ?? null,
+          createdAt: t.createdAt || new Date().toISOString(),
+          password: t.password || 'Recovered@123',
+          college: t.college || '',
+          department: t.department || '',
+          year: String(t.year || ''),
+          mobile: t.mobile || '',
+          leaderName: t.leaderName || 'Unknown',
+          teamName: t.teamName,
+        })) as Team[];
+
+      const before = teams.length;
+      const merged = mergeTeams(teams, cleaned);
+      setTeams(merged);
+      saveTeams(merged);
+
+      let synced = 0;
+      for (const team of cleaned) {
+        const { error } = await createTeam(team);
+        if (!error) synced += 1;
+        else logger.error(`Failed to sync recovered team ${team.teamName}`, error);
+      }
+
+      await refreshTeams();
+      const recovered = Math.max(merged.length - before, cleaned.length);
+      return {
+        ok: true,
+        message: `Recovered ${cleaned.length} team(s). Synced ${synced} to database.`,
+        recovered,
+      };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      return { ok: false, message, recovered: 0 };
     }
   };
 
@@ -333,6 +413,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       deleteTeam,
       refreshTeams,
+      recoverTeams,
       resetToSeedData,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
