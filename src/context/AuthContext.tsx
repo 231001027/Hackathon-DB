@@ -133,10 +133,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerTeam: AuthContextValue['registerTeam'] = async (data) => {
     try {
+      logger.info('registerTeam called with data:', data);
+      
       const exists = teams.some(
         (t) => t.teamName.trim().toLowerCase() === data.teamName.trim().toLowerCase(),
       );
-      if (exists) return { ok: false, message: 'A team with this name already exists.' };
+      if (exists) {
+        logger.error('Team name already exists:', data.teamName);
+        return { ok: false, message: 'A team with this name already exists.' };
+      }
 
       // Log activity
       logger.info('Attempting to register team:', data.teamName);
@@ -151,6 +156,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         submissionDate: null,
         createdAt: new Date().toISOString(),
       };
+
+      logger.info('Created localTeam object:', localTeam.id);
 
       // Update local state immediately
       setTeams((prev) => [localTeam, ...prev]);
@@ -177,6 +184,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         createdAt: localTeam.createdAt,
       };
 
+      logger.info('Attempting Supabase insert...');
       supabase
         .from('teams')
         .insert([supabaseTeam])
@@ -205,6 +213,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           logger.error('Supabase connection error:', err);
         });
 
+      logger.info('Returning success response');
       return { ok: true, message: 'Team registered successfully!', team: localTeam };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Registration failed';

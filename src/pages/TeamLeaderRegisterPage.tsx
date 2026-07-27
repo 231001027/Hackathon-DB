@@ -134,6 +134,16 @@ export default function TeamLeaderRegisterPage() {
       return;
     }
     const cleanMembers = form.members.filter((m) => m.name.trim() && m.email.trim() && m.department && m.year);
+    console.log('📝 [TeamLeaderRegisterPage] Submitting form with:', {
+      teamName: form.teamName,
+      leaderName: form.leaderName,
+      leaderemail: form.leaderemail,
+      college: form.college,
+      department: form.department,
+      year: form.year,
+      mobile: form.mobile,
+      membersCount: cleanMembers.length,
+    });
     setSubmitting(true);
     setTimeout(() => {
       const payload: Omit<Team, 'id' | 'pdfName' | 'submissionStatus' | 'submissionDate' | 'createdAt' | 'membersComplete' | 'selectedProjectId'> = {
@@ -147,12 +157,15 @@ export default function TeamLeaderRegisterPage() {
         mobile: form.mobile.trim(),
         members: cleanMembers,
       };
+      console.log('🚀 [TeamLeaderRegisterPage] Calling registerTeam with payload:', payload);
       const res = registerTeam(payload);
+      console.log('✅ [TeamLeaderRegisterPage] registerTeam response:', res);
       setSubmitting(false);
       if (res.ok) {
         success('Team registered!', `Welcome, ${form.teamName}. You can now log in.`);
         navigate('/student-login');
       } else {
+        console.error('❌ [TeamLeaderRegisterPage] Registration failed:', res.message);
         error('Registration failed', res.message);
       }
     }, 800);
