@@ -139,8 +139,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         (t) => t.teamName.trim().toLowerCase() === data.teamName.trim().toLowerCase(),
       );
       if (exists) {
+        const msg = 'A team with this name already exists.';
         logger.error('Team name already exists:', data.teamName);
-        return { ok: false, message: 'A team with this name already exists.' };
+        return { ok: false, message: msg };
       }
 
       // Log activity
@@ -190,13 +191,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .insert([supabaseTeam])
         .then(({ error }) => {
           if (error) {
-            logger.error('Failed to save team to Supabase:', error);
+            const errorMsg = error instanceof Error ? error.message : String(error);
+            logger.error('Failed to save team to Supabase:', errorMsg);
             // Log to activity_logs for debugging
             supabase.from('activity_logs').insert([{
               id: uid('log'),
               action: 'team_registration_error',
               description: `Failed to register team ${localTeam.teamName}`,
-              metadata: { teamId: localTeam.id, error: error.message },
+              metadata: { teamId: localTeam.id, error: errorMsg },
             }]);
           } else {
             logger.info('✅ Team successfully saved to Supabase:', localTeam.id);
@@ -210,14 +212,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         })
         .catch((err) => {
-          logger.error('Supabase connection error:', err);
+          const errorMsg = err instanceof Error ? err.message : String(err);
+          logger.error('Supabase connection error:', errorMsg);
         });
 
       logger.info('Returning success response');
       return { ok: true, message: 'Team registered successfully!', team: localTeam };
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Registration failed';
-      logger.error('registerTeam error:', error);
+      const message = error instanceof Error ? error.message : String(error);
+      logger.error('registerTeam error:', message);
       return { ok: false, message };
     }
   };

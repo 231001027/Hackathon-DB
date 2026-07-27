@@ -165,8 +165,9 @@ export default function TeamLeaderRegisterPage() {
         success('Team registered!', `Welcome, ${form.teamName}. You can now log in.`);
         navigate('/student-login');
       } else {
-        console.error('❌ [TeamLeaderRegisterPage] Registration failed:', res.message);
-        error('Registration failed', res.message);
+        const errorMsg = typeof res.message === 'string' ? res.message : 'Registration failed. Please try again.';
+        console.error('❌ [TeamLeaderRegisterPage] Registration failed:', errorMsg);
+        error('Registration failed', errorMsg);
       }
     }, 800);
   };
