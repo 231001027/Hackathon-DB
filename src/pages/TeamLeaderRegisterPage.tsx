@@ -145,7 +145,7 @@ export default function TeamLeaderRegisterPage() {
       membersCount: cleanMembers.length,
     });
     setSubmitting(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       const payload: Omit<Team, 'id' | 'pdfName' | 'submissionStatus' | 'submissionDate' | 'createdAt' | 'membersComplete' | 'selectedProjectId'> = {
         teamName: form.teamName.trim(),
         leaderName: form.leaderName.trim(),
@@ -158,7 +158,7 @@ export default function TeamLeaderRegisterPage() {
         members: cleanMembers,
       };
       console.log('🚀 [TeamLeaderRegisterPage] Calling registerTeam with payload:', payload);
-      const res = registerTeam(payload);
+      const res = await registerTeam(payload);
       console.log('✅ [TeamLeaderRegisterPage] registerTeam response:', res);
       setSubmitting(false);
       if (res.ok) {

@@ -176,7 +176,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         department: localTeam.department,
         year: String(localTeam.year),
         mobile: localTeam.mobile || null,
-        members: localTeam.members || [],
+        members: JSON.stringify(localTeam.members || []),
         membersComplete: localTeam.membersComplete,
         pdfName: localTeam.pdfName,
         submissionStatus: localTeam.submissionStatus,
@@ -189,19 +189,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       supabase
         .from('teams')
         .insert([supabaseTeam])
-        .then(({ error }) => {
+        .then(({ data, error }) => {
           if (error) {
             const errorMsg = error instanceof Error ? error.message : String(error);
-            logger.error('Failed to save team to Supabase:', errorMsg);
+            logger.error('❌ Failed to save team to Supabase:', errorMsg, error);
             // Log to activity_logs for debugging
             supabase.from('activity_logs').insert([{
               id: uid('log'),
               action: 'team_registration_error',
-              description: `Failed to register team ${localTeam.teamName}`,
+              description: `Failed to register team ${localTeam.teamName}: ${errorMsg}`,
               metadata: { teamId: localTeam.id, error: errorMsg },
             }]);
           } else {
-            logger.info('✅ Team successfully saved to Supabase:', localTeam.id);
+            logger.info('✅ Team successfully saved to Supabase:', localTeam.id, data);
             // Log successful registration
             supabase.from('activity_logs').insert([{
               id: uid('log'),
