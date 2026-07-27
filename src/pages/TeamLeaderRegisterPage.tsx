@@ -86,18 +86,25 @@ export default function TeamLeaderRegisterPage() {
     const e: Record<string, string> = {};
     const emails = new Set<string>([form.leaderemail.trim().toLowerCase()]);
     form.members.forEach((m, idx) => {
+      // Skip completely empty members
       if (!m.name.trim() && !m.email.trim() && !m.department && !m.year) return;
-      if (!m.name.trim()) e[`member-${idx}-name`] = 'Name required';
-      if (!m.email.trim()) e[`member-${idx}-email`] = 'Email required';
-      else if (!isValidEmail(m.email)) e[`member-${idx}-email`] = 'Invalid email';
-      else {
-        const lower = m.email.trim().toLowerCase();
-        if (emails.has(lower)) e[`member-${idx}-email`] = 'Duplicate email in team';
-        else if (isDuplicateEmail(teams, m.email)) e[`member-${idx}-email`] = 'This email is already registered';
-        else emails.add(lower);
+      
+      // If any field is filled, ALL fields are required
+      const hasAnyField = m.name.trim() || m.email.trim() || m.department || m.year;
+      
+      if (hasAnyField) {
+        if (!m.name.trim()) e[`member-${idx}-name`] = 'Name required';
+        if (!m.email.trim()) e[`member-${idx}-email`] = 'Email required';
+        else if (!isValidEmail(m.email)) e[`member-${idx}-email`] = 'Invalid email';
+        else {
+          const lower = m.email.trim().toLowerCase();
+          if (emails.has(lower)) e[`member-${idx}-email`] = 'Duplicate email in team';
+          else if (isDuplicateEmail(teams, m.email)) e[`member-${idx}-email`] = 'This email is already registered';
+          else emails.add(lower);
+        }
+        if (!m.department) e[`member-${idx}-department`] = 'Department required';
+        if (!m.year) e[`member-${idx}-year`] = 'Year required';
       }
-      if (!m.department) e[`member-${idx}-department`] = 'Department required';
-      if (!m.year) e[`member-${idx}-year`] = 'Year required';
     });
     setErrors(e);
     return Object.keys(e).length === 0;
