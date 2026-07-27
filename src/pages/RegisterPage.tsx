@@ -1,9 +1,18 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, Users, ArrowRight } from 'lucide-react';
+import { Trophy, Users, ArrowRight, RotateCcw } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const { resetToSeedData } = useAuth();
+
+  const handleClearData = () => {
+    if (confirm('Are you sure you want to clear all saved team data? This cannot be undone.')) {
+      resetToSeedData();
+      alert('All data cleared. You can now register a new team.');
+    }
+  };
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-hero-mesh pt-24 pb-16">
@@ -85,6 +94,16 @@ export default function RegisterPage() {
             Student Login
           </Link>
         </p>
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={handleClearData}
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            Clear All Saved Data
+          </button>
+        </div>
       </div>
     </div>
   );
