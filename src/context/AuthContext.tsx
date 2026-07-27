@@ -135,6 +135,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       logger.info('registerTeam called with data:', data);
       
+      // Validate required fields
+      if (!data.teamName || !data.leaderName || !data.leaderEmail || !data.password) {
+        const msg = 'Missing required fields';
+        logger.error(msg);
+        return { ok: false, message: msg };
+      }
+
       const exists = teams.some(
         (t) => t.teamName.trim().toLowerCase() === data.teamName.trim().toLowerCase(),
       );
@@ -236,7 +243,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       logger.error('registerTeam error:', message);
-      return { ok: false, message };
+      logger.error('Full catch error:', error);
+      return { ok: false, message: `Error: ${message}` };
     }
   };
 
