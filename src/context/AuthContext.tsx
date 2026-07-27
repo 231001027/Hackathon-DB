@@ -163,15 +163,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         teamName: localTeam.teamName,
         leaderName: localTeam.leaderName,
         leaderemail: localTeam.leaderemail,
+        password: localTeam.password,
         college: localTeam.college,
         department: localTeam.department,
         year: String(localTeam.year),
         mobile: localTeam.mobile || null,
-        members: JSON.stringify(localTeam.members || []),
+        members: localTeam.members || [],
         membersComplete: localTeam.membersComplete,
         pdfName: localTeam.pdfName,
         submissionStatus: localTeam.submissionStatus,
+        submissionDate: localTeam.submissionDate,
         selectedProjectId: localTeam.selectedProjectId || null,
+        createdAt: localTeam.createdAt,
       };
 
       supabase
