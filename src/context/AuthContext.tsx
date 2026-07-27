@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     console.log('🔍 Debug: Teams data:', teams.map(t => ({ 
       id: t.id, 
       name: t.teamName, 
-      leaderemail: t.leaderemail,
+      leaderEmail: t.leaderEmail,
       memberEmails: t.members.map(m => m.email)
     })));
     
@@ -170,7 +170,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: localTeam.id,
         teamName: localTeam.teamName,
         leaderName: localTeam.leaderName,
-        leaderemail: localTeam.leaderemail,
+        leaderEmail: localTeam.leaderEmail,
         password: localTeam.password,
         college: localTeam.college,
         department: localTeam.department,

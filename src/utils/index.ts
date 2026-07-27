@@ -118,7 +118,7 @@ export function findTeamByEmail(teams: Team[], email: string): { team: Team; isL
   if (!Array.isArray(teams)) return null;
   
   const e = email.trim().toLowerCase();
-  const team = teams.find((t) => t && t.leaderemail && typeof t.leaderemail === 'string' && t.leaderemail.toLowerCase() === e);
+  const team = teams.find((t) => t && t.leaderEmail && typeof t.leaderEmail === 'string' && t.leaderEmail.toLowerCase() === e);
   if (team) return { team, isLeader: true };
   
   const asMember = teams.find((t) => t && Array.isArray(t.members) && t.members.some((m) => m && m.email && typeof m.email === 'string' && m.email.toLowerCase() === e));
@@ -137,7 +137,7 @@ export function isDuplicateEmail(teams: Team[], email: string, excludeTeamId?: s
       if (!t || t.id === excludeTeamId) return false;
       
       // Check leader email safely
-      if (t.leaderemail && typeof t.leaderemail === 'string' && t.leaderemail.toLowerCase() === e) {
+      if (t.leaderEmail && typeof t.leaderEmail === 'string' && t.leaderEmail.toLowerCase() === e) {
         return true;
       }
       

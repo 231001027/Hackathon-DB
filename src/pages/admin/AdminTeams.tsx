@@ -41,7 +41,7 @@ export default function AdminTeams() {
       ),
     },
     { key: 'leaderName', label: 'Leader', render: (t: Team) => <span className="text-slate-700 dark:text-slate-200">{t.leaderName}</span> },
-    { key: 'leaderemail', label: 'Email', render: (t: Team) => <span className="text-slate-500 dark:text-slate-400">{t.leaderemail}</span> },
+    { key: 'leaderEmail', label: 'Email', render: (t: Team) => <span className="text-slate-500 dark:text-slate-400">{t.leaderEmail}</span> },
     { key: 'members', label: 'Members', render: (t: Team) => <span className="inline-flex items-center gap-1 text-slate-700 dark:text-slate-200"><UsersIcon className="h-3.5 w-3.5" /> {teamMemberCount(t)}</span> },
     { key: 'college', label: 'College', render: (t: Team) => <span className="text-slate-600 dark:text-slate-300">{t.college}</span> },
     { key: 'department', label: 'Department', render: (t: Team) => <span className="text-slate-600 dark:text-slate-300">{t.department}</span> },
@@ -66,7 +66,7 @@ export default function AdminTeams() {
         <DataTable
           columns={columns}
           rows={teams}
-          searchKeys={['teamName', 'leaderName', 'leaderemail', 'college']}
+          searchKeys={['teamName', 'leaderName', 'leaderEmail', 'college']}
           searchPlaceholder="Search teams, leaders, colleges…"
           filters={filters}
           actions={(t) => (

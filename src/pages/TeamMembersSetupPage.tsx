@@ -46,7 +46,7 @@ export default function TeamMembersSetupPage() {
 
   const validate = (): boolean => {
     const e: Record<string, string> = {};
-    const emails = new Set<string>([team.leaderemail.toLowerCase()]);
+    const emails = new Set<string>([team.leaderEmail.toLowerCase()]);
     members.forEach((m, idx) => {
       if (!m.name.trim()) e[`${idx}-name`] = 'Name is required';
       if (!m.email.trim()) e[`${idx}-email`] = 'Email is required';

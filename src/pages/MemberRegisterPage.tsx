@@ -94,7 +94,7 @@ export default function MemberRegisterPage() {
     }
 
     // Check if email already exists
-    if (team.leaderemail.toLowerCase() === form.email.trim().toLowerCase()) {
+    if (team.leaderEmail.toLowerCase() === form.email.trim().toLowerCase()) {
       error('Email conflict', 'This email is already registered as the team leader.');
       return;
     }

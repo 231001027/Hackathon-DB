@@ -55,13 +55,13 @@ export async function getTeamById(teamId: string): Promise<{ team: any | null; e
  * Get teams by leader ID
  */
 export async function getTeamsByLeader(
-  leaderemail: string
+  leaderEmail: string
 ): Promise<{ teams: any[] | null; error: string | null }> {
   try {
     const { data, error } = await supabase
       .from('teams')
       .select()
-      .eq('leaderemail', leaderemail);
+      .eq('leaderEmail', leaderEmail);
 
     if (error) {
       return { teams: null, error: error.message };

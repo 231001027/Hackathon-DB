@@ -213,7 +213,7 @@ export function validateLoginForm(email: string, password: string): {
 export function validateTeamRegistrationStep1(data: {
   teamName: string;
   leaderName: string;
-  leaderemail: string;
+  leaderEmail: string;
   password: string;
   confirmPassword: string;
   isDuplicate?: (email: string) => boolean;
@@ -226,10 +226,10 @@ export function validateTeamRegistrationStep1(data: {
   const nameError = fieldValidators.name(data.leaderName);
   if (nameError) errors.leaderName = nameError;
 
-  const emailError = fieldValidators.email(data.leaderemail, {
+  const emailError = fieldValidators.email(data.leaderEmail, {
     checkDuplicate: data.isDuplicate,
   });
-  if (emailError) errors.leaderemail = emailError;
+  if (emailError) errors.leaderEmail = emailError;
 
   const passwordError = fieldValidators.password(data.password);
   if (passwordError) errors.password = passwordError;

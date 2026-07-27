@@ -19,7 +19,7 @@ CREATE TABLE teams (
     id TEXT PRIMARY KEY,
     teamName TEXT NOT NULL UNIQUE,
     leaderName TEXT NOT NULL,
-    leaderemail TEXT UNIQUE NOT NULL,
+    leaderEmail TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     college TEXT NOT NULL,
     department TEXT NOT NULL,
