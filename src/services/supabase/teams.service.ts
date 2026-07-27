@@ -54,12 +54,14 @@ export async function getTeamById(teamId: string): Promise<{ team: any | null; e
 /**
  * Get teams by leader ID
  */
-export async function getTeamsByLeader(leaderId: string): Promise<{ teams: any[] | null; error: string | null }> {
+export async function getTeamsByLeader(
+  leaderemail: string
+): Promise<{ teams: any[] | null; error: string | null }> {
   try {
     const { data, error } = await supabase
       .from('teams')
       .select()
-      .eq('leader_id', leaderId);
+      .eq('leaderemail', leaderemail);
 
     if (error) {
       return { teams: null, error: error.message };
@@ -80,7 +82,7 @@ export async function getAllTeams(): Promise<{ teams: any[] | null; error: strin
     const { data, error } = await supabase
       .from('teams')
       .select()
-      .order('created_at', { ascending: false });
+      .order('createdAt', { ascending: false });
 
     if (error) {
       return { teams: null, error: error.message };
@@ -150,11 +152,9 @@ export async function selectProject(
     const { data, error } = await supabase
       .from('teams')
       .update({
-        project_id: projectId,
-        project_title: projectTitle,
-        abstract: abstract,
-        status: 'submitted',
-      })
+  selectedProjectId: projectId,
+  submissionStatus: 'submitted',
+})
       .eq('id', teamId)
       .select()
       .single();
@@ -182,13 +182,14 @@ export async function getTeamStats(): Promise<{
   try {
     const { data, error } = await supabase
       .from('teams')
-      .select('status', { count: 'exact' });
+      .select('submissionStatus', { count: 'exact' });
 
     if (error) {
       return { totalTeams: 0, activeTeams: 0, submittedTeams: 0, error: error.message };
     }
 
-    const submitted = data?.filter((t: any) => t.status === 'submitted').length || 0;
+    const submitted =
+  data?.filter((t: any) => t.submissionStatus === 'submitted').length || 0;
     const total = data?.length || 0;
 
     return {
