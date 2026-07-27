@@ -145,7 +145,7 @@ export default function TeamLeaderRegisterPage() {
       membersCount: cleanMembers.length,
     });
     setSubmitting(true);
-    setTimeout(async () => {
+    setTimeout(() => {
       const payload: Omit<Team, 'id' | 'pdfName' | 'submissionStatus' | 'submissionDate' | 'createdAt' | 'membersComplete' | 'selectedProjectId'> = {
         teamName: form.teamName.trim(),
         leaderName: form.leaderName.trim(),
@@ -158,17 +158,22 @@ export default function TeamLeaderRegisterPage() {
         members: cleanMembers,
       };
       console.log('🚀 [TeamLeaderRegisterPage] Calling registerTeam with payload:', payload);
-      const res = await registerTeam(payload);
-      console.log('✅ [TeamLeaderRegisterPage] registerTeam response:', res);
-      setSubmitting(false);
-      if (res.ok) {
-        success('Team registered!', `Welcome, ${form.teamName}. You can now log in.`);
-        navigate('/student-login');
-      } else {
-        const errorMsg = typeof res.message === 'string' ? res.message : 'Registration failed. Please try again.';
-        console.error('❌ [TeamLeaderRegisterPage] Registration failed:', errorMsg);
-        error('Registration failed', errorMsg);
-      }
+      registerTeam(payload).then((res) => {
+        console.log('✅ [TeamLeaderRegisterPage] registerTeam response:', res);
+        setSubmitting(false);
+        if (res.ok) {
+          success('Team registered!', `Welcome, ${form.teamName}. You can now log in.`);
+          navigate('/student-login');
+        } else {
+          const errorMsg = typeof res.message === 'string' ? res.message : 'Registration failed. Please try again.';
+          console.error('❌ [TeamLeaderRegisterPage] Registration failed:', errorMsg);
+          error('Registration failed', errorMsg);
+        }
+      }).catch((err) => {
+        console.error('❌ [TeamLeaderRegisterPage] Error in registerTeam:', err);
+        setSubmitting(false);
+        error('Registration error', 'An unexpected error occurred');
+      });
     }, 800);
   };
 
