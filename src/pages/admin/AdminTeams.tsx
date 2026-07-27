@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Eye, Trash2, Users as UsersIcon } from 'lucide-react';
+import { Eye, Trash2, Users as UsersIcon, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
@@ -13,12 +13,26 @@ import type { Team } from '@/types';
 import { teamMemberCount } from '@/utils';
 
 export default function AdminTeams() {
-  const { user, teams, deleteTeam } = useAuth();
-  const { success, warning } = useToast();
+  const { user, teams, teamsLoading, deleteTeam, refreshTeams } = useAuth();
+  const { success } = useToast();
   const [viewTeam, setViewTeam] = useState<Team | null>(null);
   const [deleteTeamState, setDeleteTeamState] = useState<Team | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    void refreshTeams();
+    // Load once on mount; manual Refresh button covers later updates
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!user || user.role !== 'admin') return <Navigate to="/admin-login" replace />;
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refreshTeams();
+    setRefreshing(false);
+    success('Teams refreshed', 'Loaded the latest registrations from the database.');
+  };
 
   const confirmDelete = () => {
     if (!deleteTeamState) return;
@@ -58,28 +72,45 @@ export default function AdminTeams() {
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
       <DashboardHeader
         title="Registered Teams"
-        subtitle={`${teams.length} teams registered`}
+        subtitle={teamsLoading ? 'Loading teams…' : `${teams.length} teams registered`}
         breadcrumbs={[{ label: 'Admin', to: '/admin/dashboard' }, { label: 'Teams' }]}
+        actions={
+          <button
+            type="button"
+            onClick={handleRefresh}
+            disabled={refreshing || teamsLoading}
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            <RefreshCw className={`h-4 w-4 ${refreshing || teamsLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+        }
       />
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <DataTable
-          columns={columns}
-          rows={teams}
-          searchKeys={['teamName', 'leaderName', 'leaderEmail', 'college']}
-          searchPlaceholder="Search teams, leaders, colleges…"
-          filters={filters}
-          actions={(t) => (
-            <>
-              <button onClick={() => setViewTeam(t)} className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-brand-100 hover:text-brand-600 dark:hover:bg-brand-900/30" title="View">
-                <Eye className="h-4 w-4" />
-              </button>
-              <button onClick={() => setDeleteTeamState(t)} className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-rose-100 hover:text-rose-600 dark:hover:bg-rose-500/15" title="Delete">
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </>
-          )}
-        />
+        {teamsLoading && teams.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white/60 p-10 text-center text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">
+            Loading registered teams from the database…
+          </div>
+        ) : (
+          <DataTable
+            columns={columns}
+            rows={teams}
+            searchKeys={['teamName', 'leaderName', 'leaderEmail', 'college']}
+            searchPlaceholder="Search teams, leaders, colleges…"
+            filters={filters}
+            actions={(t) => (
+              <>
+                <button onClick={() => setViewTeam(t)} className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-brand-100 hover:text-brand-600 dark:hover:bg-brand-900/30" title="View">
+                  <Eye className="h-4 w-4" />
+                </button>
+                <button onClick={() => setDeleteTeamState(t)} className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-rose-100 hover:text-rose-600 dark:hover:bg-rose-500/15" title="Delete">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </>
+            )}
+          />
+        )}
       </motion.div>
 
       <TeamDetailsModal open={!!viewTeam} onClose={() => setViewTeam(null)} team={viewTeam} />
