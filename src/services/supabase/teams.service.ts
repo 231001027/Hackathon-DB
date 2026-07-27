@@ -1,6 +1,6 @@
 /**
  * Supabase Teams Service
- * Handles team operations (create, read, update, delete)
+ * Live DB uses lowercase columns (Postgres folded unquoted camelCase).
  *
  * @module services/supabase/teams.service
  */
@@ -9,9 +9,7 @@ import { supabase } from '@/config/supabase';
 import type { Team, TeamMember, SubmissionStatus } from '@/types';
 
 /**
- * Postgres folds unquoted identifiers to lowercase, so live columns are often
- * `teamname` / `leaderemail` even when SQL was written as camelCase.
- * Accept both shapes when reading.
+ * Map DB row (lowercase or camelCase) → app Team type
  */
 export function normalizeTeam(row: Record<string, any>): Team {
   const membersRaw = row.members ?? '[]';
@@ -49,30 +47,8 @@ export function normalizeTeam(row: Record<string, any>): Team {
   };
 }
 
-/** Payload matching the app's camelCase schema (quoted columns). */
-function toCamelPayload(team: Team): Record<string, unknown> {
-  return {
-    id: team.id,
-    teamName: team.teamName,
-    leaderName: team.leaderName,
-    leaderEmail: team.leaderEmail,
-    password: team.password,
-    college: team.college,
-    department: team.department,
-    year: String(team.year),
-    mobile: team.mobile || '',
-    members: team.members || [],
-    membersComplete: Boolean(team.membersComplete),
-    pdfName: team.pdfName,
-    submissionStatus: team.submissionStatus,
-    submissionDate: team.submissionDate,
-    selectedProjectId: team.selectedProjectId ?? null,
-    createdAt: team.createdAt,
-  };
-}
-
-/** Payload for DBs where unquoted camelCase became lowercase. */
-function toLowerPayload(team: Team): Record<string, unknown> {
+/** Insert/update payload matching live lowercase columns */
+function toDbPayload(team: Team): Record<string, unknown> {
   return {
     id: team.id,
     teamname: team.teamName,
@@ -93,29 +69,37 @@ function toLowerPayload(team: Team): Record<string, unknown> {
   };
 }
 
+function toDbUpdates(updates: Partial<Team>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  if (updates.teamName !== undefined) out.teamname = updates.teamName;
+  if (updates.leaderName !== undefined) out.leadername = updates.leaderName;
+  if (updates.leaderEmail !== undefined) out.leaderemail = updates.leaderEmail;
+  if (updates.password !== undefined) out.password = updates.password;
+  if (updates.college !== undefined) out.college = updates.college;
+  if (updates.department !== undefined) out.department = updates.department;
+  if (updates.year !== undefined) out.year = String(updates.year);
+  if (updates.mobile !== undefined) out.mobile = updates.mobile;
+  if (updates.members !== undefined) out.members = updates.members;
+  if (updates.membersComplete !== undefined) out.memberscomplete = updates.membersComplete;
+  if (updates.pdfName !== undefined) out.pdfname = updates.pdfName;
+  if (updates.submissionStatus !== undefined) out.submissionstatus = updates.submissionStatus;
+  if (updates.submissionDate !== undefined) out.submissiondate = updates.submissionDate;
+  if (updates.selectedProjectId !== undefined) out.selectedprojectid = updates.selectedProjectId;
+  return out;
+}
+
 /**
- * Create a new team (tries camelCase then lowercase column names).
+ * Create a new team
  */
 export async function createTeam(input: Team): Promise<{ team: Team | null; error: string | null }> {
   try {
-    const camel = toCamelPayload(input);
-    let { data, error } = await supabase.from('teams').insert([camel]).select().single();
+    const payload = toDbPayload(input);
+    let { data, error } = await supabase.from('teams').insert([payload]).select().single();
 
-    // Retry without password if column is missing from older schemas
+    // Older schemas may lack password
     if (error && /password/i.test(error.message)) {
-      const { password: _pw, ...withoutPassword } = camel;
+      const { password: _pw, ...withoutPassword } = payload;
       ({ data, error } = await supabase.from('teams').insert([withoutPassword]).select().single());
-    }
-
-    // Retry with lowercase keys (unquoted Postgres identifiers)
-    if (error && /column|schema cache|Could not find/i.test(error.message)) {
-      const lower = toLowerPayload(input);
-      ({ data, error } = await supabase.from('teams').insert([lower]).select().single());
-
-      if (error && /password/i.test(error.message)) {
-        const { password: _pw, ...withoutPassword } = lower;
-        ({ data, error } = await supabase.from('teams').insert([withoutPassword]).select().single());
-      }
     }
 
     if (error) {
@@ -154,14 +138,10 @@ export async function getTeamsByLeader(
   leaderEmail: string
 ): Promise<{ teams: Team[] | null; error: string | null }> {
   try {
-    let { data, error } = await supabase
+    const { data, error } = await supabase
       .from('teams')
       .select('*')
-      .eq('leaderEmail', leaderEmail);
-
-    if (error && /column|schema cache|Could not find/i.test(error.message)) {
-      ({ data, error } = await supabase.from('teams').select('*').eq('leaderemail', leaderEmail));
-    }
+      .eq('leaderemail', leaderEmail.trim().toLowerCase());
 
     if (error) {
       return { teams: null, error: error.message };
@@ -176,27 +156,23 @@ export async function getTeamsByLeader(
 
 /**
  * Get all teams (admin source of truth)
+ * Uses lowercase `createdat` — camelCase `createdAt` 400s on this DB.
  */
 export async function getAllTeams(): Promise<{ teams: Team[] | null; error: string | null }> {
   try {
     let { data, error } = await supabase
       .from('teams')
       .select('*')
-      .order('createdAt', { ascending: false });
+      .order('createdat', { ascending: false });
 
-    if (error && /column|schema cache|Could not find/i.test(error.message)) {
-      ({ data, error } = await supabase
-        .from('teams')
-        .select('*')
-        .order('createdat', { ascending: false }));
-    }
-
-    // Fall back to unordered select if order column is missing
+    // Fallback if order column name differs
     if (error) {
+      console.warn('[teams.service] ordered select failed, retrying without order:', error.message);
       ({ data, error } = await supabase.from('teams').select('*'));
     }
 
     if (error) {
+      console.error('[teams.service] getAllTeams failed:', error.message);
       return { teams: null, error: error.message };
     }
 
@@ -219,7 +195,7 @@ export async function updateTeam(
   try {
     const { data, error } = await supabase
       .from('teams')
-      .update(updates)
+      .update(toDbUpdates(updates))
       .eq('id', teamId)
       .select()
       .single();
@@ -263,27 +239,15 @@ export async function selectProject(
   _abstract: string
 ): Promise<{ team: Team | null; error: string | null }> {
   try {
-    let { data, error } = await supabase
+    const { data, error } = await supabase
       .from('teams')
       .update({
-        selectedProjectId: projectId,
-        submissionStatus: 'submitted',
+        selectedprojectid: projectId,
+        submissionstatus: 'submitted',
       })
       .eq('id', teamId)
       .select()
       .single();
-
-    if (error && /column|schema cache|Could not find/i.test(error.message)) {
-      ({ data, error } = await supabase
-        .from('teams')
-        .update({
-          selectedprojectid: projectId,
-          submissionstatus: 'submitted',
-        })
-        .eq('id', teamId)
-        .select()
-        .single());
-    }
 
     if (error) {
       return { team: null, error: error.message };
