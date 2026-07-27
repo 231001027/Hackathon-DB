@@ -9,8 +9,8 @@ interface PDFViewerProps {
 
 export default function PDFViewer({ 
   title = 'Reference Document', 
-  pdfUrl = '/reference-abstract-key.pdf',
-  fileName = 'reference-abstract-key.pdf'
+  pdfUrl = '/Reference abstract.key.pdf',
+  fileName = 'Reference abstract.key.pdf'
 }: PDFViewerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [iframeError, setIframeError] = useState(false);

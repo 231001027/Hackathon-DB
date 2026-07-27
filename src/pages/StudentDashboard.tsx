@@ -248,8 +248,8 @@ export default function StudentDashboard() {
           
           <PDFViewer 
             title="Abstract Submission Reference Key"
-            pdfUrl="/reference-abstract-key.pdf"
-            fileName="reference-abstract-key.pdf"
+            pdfUrl="/Reference abstract.key.pdf"
+            fileName="Reference abstract.key.pdf"
           />
         </motion.div>
       </div>
